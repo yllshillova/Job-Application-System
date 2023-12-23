@@ -43,13 +43,15 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EmailNotificationId");
+
                     b.HasIndex("JobPostId");
 
                     b.HasIndex("JobSeekerId");
 
                     b.HasIndex("ResumeFileId");
 
-                    b.ToTable("Application");
+                    b.ToTable("Applications");
                 });
 
             modelBuilder.Entity("Domain.Company", b =>
@@ -133,7 +135,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.ToTable("EmailNotification");
+                    b.ToTable("EmailNotifications");
                 });
 
             modelBuilder.Entity("Domain.Experience", b =>
@@ -195,7 +197,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("RecruiterId");
 
-                    b.ToTable("JobPost");
+                    b.ToTable("JobPosts");
                 });
 
             modelBuilder.Entity("Domain.ResumeStorage", b =>
@@ -246,11 +248,6 @@ namespace Persistence.Migrations
                     b.Property<string>("ContactNumber")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Email")
                         .HasColumnType("TEXT");
 
@@ -276,23 +273,21 @@ namespace Persistence.Migrations
 
                     b.ToTable("Users");
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("User");
-
-                    b.UseTphMappingStrategy();
+                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("Domain.Entrepreneur", b =>
                 {
                     b.HasBaseType("Domain.User");
 
-                    b.HasDiscriminator().HasValue("Entrepreneur");
+                    b.ToTable("Entrepreneurs", (string)null);
                 });
 
             modelBuilder.Entity("Domain.JobSeeker", b =>
                 {
                     b.HasBaseType("Domain.User");
 
-                    b.HasDiscriminator().HasValue("JobSeeker");
+                    b.ToTable("JobSeekers", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Recruiter", b =>
@@ -304,20 +299,20 @@ namespace Persistence.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.HasDiscriminator().HasValue("Recruiter");
+                    b.ToTable("Recruiters", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Application", b =>
                 {
-                    b.HasOne("Domain.JobPost", "JobPost")
-                        .WithMany("Applications")
-                        .HasForeignKey("JobPostId")
+                    b.HasOne("Domain.EmailNotification", "EmailNotification")
+                        .WithMany()
+                        .HasForeignKey("EmailNotificationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.EmailNotification", "EmailNotification")
-                        .WithMany()
-                        .HasForeignKey("JobSeekerId")
+                    b.HasOne("Domain.JobPost", "JobPost")
+                        .WithMany("Applications")
+                        .HasForeignKey("JobPostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -406,11 +401,35 @@ namespace Persistence.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Domain.Entrepreneur", b =>
+                {
+                    b.HasOne("Domain.User", null)
+                        .WithOne()
+                        .HasForeignKey("Domain.Entrepreneur", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.JobSeeker", b =>
+                {
+                    b.HasOne("Domain.User", null)
+                        .WithOne()
+                        .HasForeignKey("Domain.JobSeeker", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Domain.Recruiter", b =>
                 {
                     b.HasOne("Domain.Company", "Company")
                         .WithMany("Recruiters")
                         .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.User", null)
+                        .WithOne()
+                        .HasForeignKey("Domain.Recruiter", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

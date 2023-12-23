@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain
 {
@@ -12,6 +13,7 @@ namespace Domain
         public string Description { get; set; }
         public string Email { get; set; }
         public Guid EntrepreneurId { get; set; }
+        [ForeignKey("EntrepreneurId")]
         public Entrepreneur Entrepreneur { get; set; }
         public List<Recruiter> Recruiters { get; set; }
         public List<EmailNotification> EmailNotifications {get; set;}

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain
 {
@@ -13,7 +14,7 @@ namespace Domain
         public string SentAt { get; set; }
 
         public Guid CompanyId { get; set; }
-
+        [ForeignKey("CompanyId")]
         public Company Company { get; set; }
 
 

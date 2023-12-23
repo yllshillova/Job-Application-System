@@ -10,6 +10,7 @@ namespace Domain
         public string SkillName { get; set; }
         public string SkillDescription { get; set; }
         public Guid UserId { get; set; }
+        [ForeignKey("UserId")]
         public User User { get; set; }
     }
 }

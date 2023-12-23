@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain
 {
@@ -11,6 +12,7 @@ namespace Domain
         public string Requirements { get; set; }
         public DateTime DatePosted { get; set; }
         public Guid RecruiterId { get; set; }
+        [ForeignKey("RecruiterId")]
         public Recruiter Recruiter { get; set; }
         public List<Application> Applications { get; set; }
 

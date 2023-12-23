@@ -14,6 +14,7 @@ namespace Domain
         public DateTime? EndDate { get; set; }
         public string Description { get; set; }
         public Guid UserId { get; set; }
+         [ForeignKey("UserId")]
         public User User { get; set; }
     }
 }

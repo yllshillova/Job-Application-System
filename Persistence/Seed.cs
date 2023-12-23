@@ -8,104 +8,160 @@ namespace Persistence
         {
             if (context.Users.Any()) return;
 
-            var entrepreneurs = new List<Entrepreneur>
-        {
-            new Entrepreneur
-            {
-                Name = "Entrepreneur One",
-                LastName= "shillova",
-                Location = "Silicon Valley, USA",
-                Summary = "Visionary leader with a passion for innovation.",
-                Educations = new List<Education>
-                {
-                    new Education
-                    {
-                        Institution = "Startup University",
-                        Degree = "Entrepreneurship",
-                        GraduationYear = "2021"
-                    }
-                },
-                Skills = new List<Skill>
-                {
-                    new Skill
-                    {
-                        SkillName = "Product Development",
-                        SkillDescription = "Creating innovative products."
-                    },
-                    new Skill
-                    {
-                        SkillName = "Strategy",
-                        SkillDescription = "Developing business strategies."
-                    }
-                }
-            },
-            // Add more entrepreneurs if needed
-        };
+            var users = new List<User>();
+            var entrepreneurs = new List<Entrepreneur>();
+            var jobSeekers = new List<JobSeeker>();
+            var recruiters = new List<Recruiter>();
+            var companies = new List<Company>();
+            var skills = new List<Skill>();
+            var educations = new List<Education>();
+            var experiences = new List<Experience>();
 
-            var jobSeekers = new List<JobSeeker>
-        {
-            new JobSeeker
+            // Create 10 instances for each entity
+            for (int i = 1; i <= 10; i++)
             {
-                Name = "Jobseeker one",
-                Location = "San Francisco, USA",
-                Summary = "Seeking opportunities in the tech industry.",
-                Educations = new List<Education>
+                // Create User
+                var user = new User
                 {
-                    new Education
-                    {
-                        Institution = "Tech Academy",
-                        Degree = "Computer Engineering",
-                        GraduationYear = "2021"
-                    }
-                },
-                Skills = new List<Skill>
-                {
-                    new Skill
-                    {
-                        SkillName = "Java",
-                        SkillDescription = "Programming in Java."
-                    },
-                    new Skill
-                    {
-                        SkillName = "JavaScript",
-                        SkillDescription = "Web development with JavaScript."
-                    },
-                    new Skill
-                    {
-                        SkillName = "Data Analysis",
-                        SkillDescription = "Analyzing and interpreting data."
-                    }
-                }
-            },
-            // Add more job seekers if needed
-        };
+                    Name = $"User{i}",
+                    LastName = $"Last{i}",
+                    Password = $"Password{i}",
+                    Email = $"user{i}@example.com",
+                    Headline = $"Headline{i}",
+                    Summary = $"Summary{i}",
+                    Location = $"Location{i}",
+                    ContactNumber = $"ContactNumber{i}",
+                    Skills = new List<Skill>(),
+                    Educations = new List<Education>(),
+                    Experiences = new List<Experience>(),
+                };
 
-            var recruiters = new List<Recruiter>
-        {
-            new Recruiter
-            {
-                Name = "Recruiter One",
-                Location = "New York City, USA",
-                Summary = "Experienced recruiter with a focus on tech talent.",
-                Experiences = new List<Experience>
+                // Create Skill
+                var skill = new Skill
                 {
-                    new Experience
-                    {
-                        Position = "Tech Recruiter",
-                        CompanyName = "Tech Recruiting Co.",
-                        Location = "New York City",
-                        StartDate = DateTime.UtcNow.AddYears(-3),
-                        Description = "Recruitment for top tech companies."
-                    }
-                }
-            },
-            // Add more recruiters if needed
-        };
+                    SkillName = $"Skill{i}",
+                    SkillDescription = $"SkillDescription{i}",
+                    UserId = user.Id,
+                    User = user,
+                };
+
+                user.Skills.Add(skill);
+                skills.Add(skill);
+
+                // Create Education
+                var education = new Education
+                {
+                    Institution = $"Institution{i}",
+                    Degree = $"Degree{i}",
+                    GraduationYear = $"GraduationYear{i}",
+                    UserId = user.Id,
+                    User = user,
+                };
+
+                user.Educations.Add(education);
+                educations.Add(education);
+
+                // Create Experience
+                var experience = new Experience
+                {
+                    Position = $"Position{i}",
+                    CompanyName = $"CompanyName{i}",
+                    Location = $"Location{i}",
+                    StartDate = DateTime.Now.AddMonths(-i),
+                    EndDate = DateTime.Now.AddMonths(-i + 6),
+                    Description = $"Description{i}",
+                    UserId = user.Id,
+                    User = user,
+                };
+
+                user.Experiences.Add(experience);
+                experiences.Add(experience);
+
+                users.Add(user);
+
+                // Create Entrepreneur
+                var entrepreneur = new Entrepreneur
+                {
+                    Id = user.Id,
+                    Companies = new List<Company>(),
+                };
+
+                entrepreneur.Companies.Add(new Company
+                {
+                    Name = $"Company{i}",
+                    Industry = $"Industry{i}",
+                    Location = $"CompanyLocation{i}",
+                    Description = $"CompanyDescription{i}",
+                    Email = $"company{i}@example.com",
+                    EntrepreneurId = entrepreneur.Id,
+                    Entrepreneur = entrepreneur,
+                    Recruiters = new List<Recruiter>(),
+                    EmailNotifications = new List<EmailNotification>(),
+                });
+
+                entrepreneurs.Add(entrepreneur);
+
+                // Create JobSeeker
+                var jobSeeker = new JobSeeker
+                {
+                    Id = user.Id,
+                    Applications = new List<Application>(),
+                };
+
+                jobSeekers.Add(jobSeeker);
+
+                // Create Recruiter
+                var recruiter = new Recruiter
+                {
+                    Id = user.Id,
+                    CompanyId = entrepreneur.Companies.First().Id,
+                    Company = entrepreneur.Companies.First(),
+                    JobPosts = new List<JobPost>(),
+                };
+
+                recruiter.JobPosts.Add(new JobPost
+                {
+                    Title = $"JobTitle{i}",
+                    Description = $"JobDescription{i}",
+                    Requirements = $"JobRequirements{i}",
+                    DatePosted = DateTime.Now.AddMonths(-i),
+                    RecruiterId = recruiter.Id,
+                    Recruiter = recruiter,
+                    Applications = new List<Application>(),
+                });
+
+                recruiters.Add(recruiter);
+
+               
+                // // Create EmailNotification
+                // var emailNotification = new EmailNotification
+                // {
+                //     EmailAddress = $"notification{i}@example.com",
+                //     Subject = $"NotificationSubject{i}",
+                //     Body = $"NotificationBody{i}",
+                //     SentAt = DateTime.Now.ToString(),
+                //     CompanyId = entrepreneur.Companies.First().Id,
+                //     Company = entrepreneur.Companies.First(),
+                // };
+
+                // emailNotifications.Add(emailNotification);
+            }
+
 
             // Combine all user roles
             var allUsers = entrepreneurs.Cast<User>().Concat(jobSeekers).Concat(recruiters).ToList();
-
             await context.Users.AddRangeAsync(allUsers);
+            await context.Skills.AddRangeAsync(skills);
+            await context.Educations.AddRangeAsync(educations);
+            await context.Experiences.AddRangeAsync(experiences);
+            await context.Entrepreneurs.AddRangeAsync(entrepreneurs);
+            await context.JobSeekers.AddRangeAsync(jobSeekers);
+            await context.Recruiters.AddRangeAsync(recruiters);
+            await context.Companies.AddRangeAsync(companies);
+            // await context.JobPosts.AddRangeAsync(jobPosts);
+            // await context.EmailNotifications.AddRangeAsync(emailNotifications);
+
+            // Save changes to the database
             await context.SaveChangesAsync();
         }
     }

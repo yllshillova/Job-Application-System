@@ -12,6 +12,7 @@ namespace Domain
         public string GraduationYear { get; set; }
 
         public Guid UserId { get; set; }
+         [ForeignKey("UserId")]
         public User User { get; set; }
     }
 }
