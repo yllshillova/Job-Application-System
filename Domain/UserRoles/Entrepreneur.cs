@@ -7,6 +7,6 @@ namespace Domain
 {
     public class Entrepreneur : User
     {
-        
+     public List<Company> Companies { get; set; }   
     }
 }

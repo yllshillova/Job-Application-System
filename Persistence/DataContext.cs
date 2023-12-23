@@ -20,7 +20,7 @@ namespace Persistence
         public DbSet<Entrepreneur> Entrepreneurs { get; set; }
         public DbSet<JobSeeker> JobSeekers { get; set; }
         public DbSet<Recruiter> Recruiters { get; set; }
-
+        public DbSet<Company> Companies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,10 +41,42 @@ namespace Persistence
                 .WithMany(u => u.Skills)
                 .HasForeignKey(e => e.UserId);
 
-        
+
+            modelBuilder.Entity<Company>()
+                .HasOne(x => x.Entrepreneur)
+                .WithMany(c => c.Companies)
+                .HasForeignKey(e => e.EntrepreneurId);
+
+             modelBuilder.Entity<Recruiter>()
+                .HasOne(r => r.Company)
+                .WithMany(c => c.Recruiters)
+                .HasForeignKey(e => e.CompanyId);
+            
+            modelBuilder.Entity<JobPost>()
+                .HasOne(r => r.Recruiter)
+                .WithMany(c => c.JobPosts)
+                .HasForeignKey(e => e.RecruiterId);
+
+            modelBuilder.Entity<EmailNotification>()
+                .HasOne(r => r.Company)
+                .WithMany(c => c.EmailNotifications)
+                .HasForeignKey(e => e.CompanyId);
+
+            modelBuilder.Entity<Application>()
+                .HasOne(r => r.JobPost)
+                .WithMany(c => c.Applications)
+                .HasForeignKey(e => e.JobPostId);
+
+            modelBuilder.Entity<Application>()
+                .HasOne(r => r.JobSeeker)
+                .WithMany(c => c.Applications)
+                .HasForeignKey(e => e.JobSeekerId);
+
+            modelBuilder.Entity<Application>()
+                .HasOne(r => r.EmailNotification)
+                .WithMany()
+                .HasForeignKey(e => e.JobSeekerId);
 
         }
-
-
     }
 }
