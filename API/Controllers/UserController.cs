@@ -16,24 +16,45 @@ namespace API.Controllers
             _service = service;
 
         }
-        [HttpGet("all-users")]
+        [HttpGet]
         public async Task<ActionResult<List<User>>> GetAllUsers()
         {
             return await _service.GetAllUsers();
         }
-        [HttpGet("all-recruiters")]
-        public async Task<ActionResult<List<Recruiter>>> GetAllRecruiters()
-        {
-            return await _service.GetAllRecruiters();
-        }
+        // [HttpGet("recruiters")]
+        // public async Task<ActionResult<List<Recruiter>>> GetAllRecruiters()
+        // {
+        //     return await _service.GetAllRecruiters();
+        // }
+
         [HttpGet("{id}")]
 
         public async Task<ActionResult<User>> GetUserById(Guid id)
         {
-            await _service.GetUserById(id);
+
+            return Ok(await _service.GetUserById(id));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateUser(User user)
+        {
+            await _service.AddUser(user);
             return Ok();
         }
 
+        [HttpPut]
+        public async Task<IActionResult> EditUser(Guid id, User user)
+        {
+            user.Id = id;
+            await _service.UpdateUser(id, user);
+            return Ok();
+        }
+          [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteActivity(Guid id)
+        {
+            await _service.DeleteUser(id);
+            return Ok();
+        }
 
     }
 }
