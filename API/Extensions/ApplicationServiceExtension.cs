@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Application.Core;
 using Application.Services;
 using Application.Services.ApplicationServices;
@@ -16,6 +17,10 @@ namespace API.Extensions
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+            // services.AddControllers().AddJsonOptions(options =>
+            // {
+            //     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+            // });
             services.AddDbContext<DataContext>(opt =>
             {
                 opt.UseSqlite(config.GetConnectionString("DefaultConnection"));

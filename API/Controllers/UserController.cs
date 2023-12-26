@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Services.UserServices;
 using Domain;
+using DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -17,7 +18,7 @@ namespace API.Controllers
 
         }
         [HttpGet]
-        public async Task<ActionResult<List<User>>> GetAllUsers()
+        public async Task<ActionResult<List<UserDto>>> GetAllUsers()
         {
             return await _service.GetAllUsers();
         }
@@ -26,6 +27,11 @@ namespace API.Controllers
         // {
         //     return await _service.GetAllRecruiters();
         // }
+        // [HttpGet("skills")]
+        // public async Task<ActionResult<List<Skill>>> GetAllSkills(){
+        //     return await _service.GetAllSkills();
+        // }
+
 
         [HttpGet("{id}")]
 
@@ -36,17 +42,17 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser(User user)
+        public async Task<IActionResult> CreateUser(UserDto userDto)
         {
-            await _service.AddUser(user);
+            await _service.AddUser(userDto);
             return Ok();
         }
 
         [HttpPut]
-        public async Task<IActionResult> EditUser(Guid id, User user)
+        public async Task<IActionResult> EditUser(Guid id, UserDto userDto)
         {
-            user.Id = id;
-            await _service.UpdateUser(id, user);
+            userDto.Id = id;
+            await _service.UpdateUser(id, userDto);
             return Ok();
         }
           [HttpDelete("{id}")]

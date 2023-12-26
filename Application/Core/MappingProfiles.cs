@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Domain;
+using DTOs;
 
 namespace Application.Core
 {
@@ -11,7 +8,12 @@ namespace Application.Core
     {
         public MappingProfiles()
         {
-            CreateMap<User,User>();
+            CreateMap<User, User>();
+            // User mapping
+            CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<Skill, SkillDto>().ReverseMap();
+            CreateMap<Education, EducationDto>().ReverseMap();
+            CreateMap<Experience, ExperienceDto>().ReverseMap();
         }
     }
 }
