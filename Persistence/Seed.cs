@@ -111,6 +111,40 @@ namespace Persistence
 
             await context.Users.AddRangeAsync(users);
             await context.SaveChangesAsync();
+            var companies = new List<Company>
+        {
+            new Company
+            {
+                Name = "Tech Solutions Inc.",
+                Industry = "Technology",
+                Location = "Silicon Valley",
+                Description = "Innovative technology solutions provider",
+                Email = "info@techsolutions.com",
+                EntrepreneurId = users[2].Id
+            },
+            new Company
+            {
+                Name = "Marketing Pros Ltd.",
+                Industry = "Marketing",
+                Location = "New York",
+                Description = "Leading marketing agency",
+                Email = "info@marketingpros.com",
+                EntrepreneurId = users[2].Id
+            },
+            new Company
+            {
+                Name = "Health Innovations Corp.",
+                Industry = "Healthcare",
+                Location = "Boston",
+                Description = "Revolutionizing healthcare solutions",
+                Email = "info@healthinnovations.com",
+                EntrepreneurId = users[2].Id
+            }
+        };
+
+            await context.Companies.AddRangeAsync(companies);
+            await context.SaveChangesAsync();
+
         }
     }
 }

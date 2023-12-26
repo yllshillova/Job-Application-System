@@ -9,7 +9,7 @@ namespace Application.Services.UserServices
         // Task<List<Recruiter>> GetAllRecruiters();
         //  Task<List<Skill>> GetAllSkills();
         Task<UserDto> GetUserById(Guid id);
-        Task AddUser(UserDto user);
+        Task AddUser(UserDto userDto);
         Task UpdateUser(Guid id, UserDto updatedUserDto);
         Task DeleteUser(Guid id);
     }

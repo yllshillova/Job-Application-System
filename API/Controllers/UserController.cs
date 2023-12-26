@@ -55,8 +55,8 @@ namespace API.Controllers
             await _service.UpdateUser(id, userDto);
             return Ok();
         }
-          [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteActivity(Guid id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(Guid id)
         {
             await _service.DeleteUser(id);
             return Ok();
