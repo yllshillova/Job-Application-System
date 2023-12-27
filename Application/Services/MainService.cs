@@ -11,10 +11,10 @@ namespace Application.Services
 {
     public class MainService
     {
-        private readonly IUserService _userService;
-        private readonly IJobPostService _jobPostService;
-        private readonly ICompanyService _companyService;
-        private readonly IApplicationService _applicationService;
+        public readonly IUserService _userService;
+        public readonly IJobPostService _jobPostService;
+        public readonly ICompanyService _companyService;
+        public readonly IApplicationService _applicationService;
 
 
         public MainService(IApplicationService applicationService,IJobPostService jobPostService,

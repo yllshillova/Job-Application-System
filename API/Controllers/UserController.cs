@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Application.Services.UserServices;
+using Application.Services;
 using Domain;
 using DTOs;
 using Microsoft.AspNetCore.Mvc;
@@ -11,8 +7,8 @@ namespace API.Controllers
 {
     public class UsersController : BaseApiController
     {
-        private readonly IUserService _service;
-        public UsersController(IUserService service)
+        private readonly MainService _service;
+        public UsersController(MainService service)
         {
             _service = service;
 
@@ -20,7 +16,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<List<UserDto>>> GetAllUsers()
         {
-            return await _service.GetAllUsers();
+            return await _service._userService.GetAllUsers();
         }
         // [HttpGet("recruiters")]
         // public async Task<ActionResult<List<Recruiter>>> GetAllRecruiters()
@@ -38,13 +34,13 @@ namespace API.Controllers
         public async Task<ActionResult<User>> GetUserById(Guid id)
         {
 
-            return Ok(await _service.GetUserById(id));
+            return Ok(await _service._userService.GetUserById(id));
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateUser(UserDto userDto)
         {
-            await _service.AddUser(userDto);
+            await _service._userService.AddUser(userDto);
             return Ok();
         }
 
@@ -52,13 +48,13 @@ namespace API.Controllers
         public async Task<IActionResult> EditUser(Guid id, UserDto userDto)
         {
             userDto.Id = id;
-            await _service.UpdateUser(id, userDto);
+            await _service._userService.UpdateUser(id, userDto);
             return Ok();
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(Guid id)
         {
-            await _service.DeleteUser(id);
+            await _service._userService.DeleteUser(id);
             return Ok();
         }
 
