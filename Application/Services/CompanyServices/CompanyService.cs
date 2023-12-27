@@ -39,7 +39,15 @@ namespace Application.Services.CompanyServices
 
         public async Task AddCompany(CompanyDto companyDto)
         {
+            var entrepreneur = await _context.Entrepreneurs.FindAsync(companyDto.EntrepreneurId);
+
+            if(entrepreneur == null) throw new Exception("Entrpreneur not found");
+
             var company = _mapper.Map<Company>(companyDto);
+
+            company.EntrepreneurId = entrepreneur.Id;
+
+
             await _context.Companies.AddAsync(company);
             await _context.SaveChangesAsync();
         }

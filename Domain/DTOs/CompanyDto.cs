@@ -13,6 +13,7 @@ namespace Domain.DTOs
         public string Location { get; set; }
         public string Description { get; set; }
         public string Email { get; set; }
+        public Guid EntrepreneurId { get; set; }
         public List<Recruiter> Recruiters { get; set; }
         public List<EmailNotification> EmailNotifications {get; set;}
 

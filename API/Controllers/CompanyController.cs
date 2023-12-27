@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Services.CompanyServices;
+using Domain;
 using Domain.DTOs;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -31,10 +32,17 @@ namespace API.Controllers
         }
         //TODO: guid id not being passed correctly
         [HttpPost]
-        public async Task<IActionResult> CreateCompany(CompanyDto companyDto)
+        public async Task<IActionResult> CreateCompany(CompanyDto company)
         {
-            await _service.AddCompany(companyDto);
+            await _service.AddCompany(company);
 
+            return Ok();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateCompany(Guid id, CompanyDto company){
+            company.Id = id;
+            await _service.UpdateCompany(id,company);
             return Ok();
         }
 
