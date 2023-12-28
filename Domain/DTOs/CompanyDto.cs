@@ -14,8 +14,8 @@ namespace Domain.DTOs
         public string Description { get; set; }
         public string Email { get; set; }
         public Guid EntrepreneurId { get; set; }
-        public List<Recruiter> Recruiters { get; set; }
-        public List<EmailNotification> EmailNotifications {get; set;}
+        public List<RecruiterDto> Recruiters { get; set; }
+        public List<EmailNotificationDto> EmailNotifications {get; set;}
 
     }
 }

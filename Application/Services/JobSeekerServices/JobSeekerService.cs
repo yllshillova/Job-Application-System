@@ -1,33 +1,35 @@
 using Application.Base;
-using Application.Services.UserServices;
+using Application.Services.JobSeekerServices;
 using AutoMapper;
 using Domain;
+using Domain.DTOs;
 using DTOs;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Services
 {
-    public class UserService : EntityBaseRepository<User, UserDto>, IUserService
+    public class JobSeekerService : EntityBaseRepository<JobSeeker, JobSeekerDto>, IJobSeekerService
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
-        public UserService(DataContext context, IMapper mapper) : base(context, mapper)
+        public JobSeekerService(DataContext context, IMapper mapper) : base(context, mapper)
         {
             _mapper = mapper;
             _context = context;
         }
 
-        public async Task<UserDto> GetUserById(Guid id)
+        public async Task<JobSeekerDto> GetJobSeekerById(Guid id)
         {
-            var user = await _context.Users
+            var jobSeeker = await _context.JobSeekers
                 .Include(e => e.Skills)
                 .Include(e => e.Educations)
                 .Include(e => e.Experiences)
+                .Include(e => e.Applications)
                 .FirstOrDefaultAsync(e => e.Id == id);
 
-            var userDto = _mapper.Map<UserDto>(user);
-            return userDto;
+            var jobSeekerDto = _mapper.Map<JobSeekerDto>(jobSeeker);
+            return jobSeekerDto;
         }
     }
 }

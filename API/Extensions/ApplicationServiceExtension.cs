@@ -4,7 +4,8 @@ using Application.Services;
 using Application.Services.ApplicationServices;
 using Application.Services.CompanyServices;
 using Application.Services.JobPostServices;
-using Application.Services.UserServices;
+using Application.Services.JobSeekerServices;
+using Application.Services.RecruiterServices;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -25,10 +26,12 @@ namespace API.Extensions
             {
                 opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
             });
-            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IJobSeekerService, JobSeekerService>();
             services.AddScoped<IJobPostService, JobPostService>();
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<IApplicationService, ApplicationService>();
+            services.AddScoped<ICompanyService, CompanyService>();
+            services.AddScoped<IRecruiterService, RecruiterService>();
             services.AddScoped<MainService>();
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
             return services;

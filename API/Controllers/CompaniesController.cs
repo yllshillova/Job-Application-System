@@ -1,20 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Application.Services;
-using Application.Services.CompanyServices;
-using Domain;
 using Domain.DTOs;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    public class CompanyController : BaseApiController
+    public class CompaniesController : BaseApiController
     {
         private readonly MainService _service;
-        public CompanyController(MainService service)
+        public CompaniesController(MainService service)
         {
             _service = service;
         }
@@ -22,7 +15,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<List<CompanyDto>>> GetAllCompanies()
         {
-            return await _service._companyService.GetAll();
+            return await _service._companyService.GetAll(r => r.Recruiters);
         }
 
         [HttpGet("{id}")]
