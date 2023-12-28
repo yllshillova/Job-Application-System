@@ -22,7 +22,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<List<CompanyDto>>> GetAllCompanies()
         {
-            return await _service._companyService.GetAllCompanies();
+            return await _service._companyService.GetAll();
         }
 
         [HttpGet("{id}")]
@@ -35,7 +35,7 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCompany(CompanyDto company)
         {
-            await _service._companyService.AddCompany(company);
+            await _service._companyService.Add(company);
 
             return Ok();
         }
@@ -43,14 +43,14 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateCompany(Guid id, CompanyDto company){
             company.Id = id;
-            await _service._companyService.UpdateCompany(id,company);
+            await _service._companyService.Update(id,company);
             return Ok();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCompany(Guid id)
         {
-            await _service._companyService.DeleteCompany(id);
+            await _service._companyService.Delete(id);
             return Ok();
         }
     }

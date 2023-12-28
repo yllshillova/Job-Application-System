@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain
 {
-    public class User
+    public class User 
     {
         [Key]
         public Guid Id { get; set; }

@@ -14,6 +14,9 @@ namespace Domain
         public Guid RecruiterId { get; set; }
         [ForeignKey("RecruiterId")]
         public Recruiter Recruiter { get; set; }
+        // public Guid CompanyId { get; set; }
+        // [ForeignKey("CompanyId")]
+        // public Company Company { get; set; }
         public List<Application> Applications { get; set; }
 
     }
