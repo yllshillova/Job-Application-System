@@ -42,7 +42,7 @@ namespace API.Controllers
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRecruiter(Guid id)
         {
             await _service._recruiterService.Delete(id);
