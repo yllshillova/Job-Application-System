@@ -1,4 +1,5 @@
 using Application.Base;
+using Application.Core;
 using Application.Services.JobSeekerServices;
 using AutoMapper;
 using Domain;
@@ -19,7 +20,7 @@ namespace Application.Services
             _context = context;
         }
 
-        public async Task<JobSeekerDto> GetJobSeekerById(Guid id)
+        public async Task<Result<JobSeekerDto>> GetJobSeekerById(Guid id)
         {
             var jobSeeker = await _context.JobSeekers
                 .Include(e => e.Skills)
@@ -29,7 +30,7 @@ namespace Application.Services
                 .FirstOrDefaultAsync(e => e.Id == id);
 
             var jobSeekerDto = _mapper.Map<JobSeekerDto>(jobSeeker);
-            return jobSeekerDto;
+            return Result<JobSeekerDto>.Success(jobSeekerDto);
         }
 
     }

@@ -18,22 +18,22 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<EntrepreneurDto>>> GetAllEntrepreneurs()
+        public async Task<IActionResult> GetAllEntrepreneurs()
         {
-            return await _service._entrepreneurService.GetAll(e => e.Companies, e => e.Educations, e => e.Experiences, e => e.Skills);
+            return HandleResult(await _service._entrepreneurService.GetAll(e => e.Companies, e => e.Educations, e => e.Experiences, e => e.Skills));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<EntrepreneurDto>> GetEntrepreneurById(Guid id)
+        public async Task<IActionResult> GetEntrepreneurById(Guid id)
         {
-            return await _service._entrepreneurService.GetEntrepreneurById(id);
+            return HandleResult(await _service._entrepreneurService.GetEntrepreneurById(id));
         }
 
         [HttpPost]
         public async Task<IActionResult> AddEntrepreneur(EntrepreneurDto entrepreneurDto)
         {
-            await _service._entrepreneurService.Add(entrepreneurDto);
-            return Ok();
+            
+            return HandleResult(await _service._entrepreneurService.Add(entrepreneurDto));
         }
 
         [HttpPut]
@@ -47,8 +47,8 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEntrepreneur(Guid id)
         {
-            await _service._entrepreneurService.Delete(id);
-            return Ok();
+            
+            return HandleResult(await _service._entrepreneurService.Delete(id));
         }
 
 

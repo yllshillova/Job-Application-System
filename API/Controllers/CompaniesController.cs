@@ -13,24 +13,21 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<CompanyDto>>> GetAllCompanies()
+        public async Task<IActionResult> GetAllCompanies()
         {
-            return await _service._companyService.GetAll(r => r.Recruiters);
+            return HandleResult(await _service._companyService.GetAll(r => r.Recruiters));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<CompanyDto>> GetCompanyById(Guid id)
+        public async Task<IActionResult> GetCompanyById(Guid id)
         {
-            var company = await _service._companyService.GetCompanyById(id);
-            return company;
+            return HandleResult(await _service._companyService.GetCompanyById(id));
         }
         //TODO: guid id not being passed correctly
         [HttpPost]
         public async Task<IActionResult> CreateCompany(CompanyDto company)
         {
-            await _service._companyService.Add(company);
-
-            return Ok();
+            return HandleResult( await _service._companyService.Add(company));
         }
 
         [HttpPut]
@@ -43,8 +40,8 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCompany(Guid id)
         {
-            await _service._companyService.Delete(id);
-            return Ok();
+            
+            return HandleResult(await _service._companyService.Delete(id));
         }
     }
 }

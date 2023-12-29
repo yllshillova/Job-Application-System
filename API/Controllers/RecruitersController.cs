@@ -17,22 +17,22 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<RecruiterDto>>> GetAllRecruiters()
+        public async Task<IActionResult> GetAllRecruiters()
         {
-            return await _service._recruiterService.GetAll(r => r.Educations, r => r.Experiences, r => r.Skills, r => r.JobPosts);
+            return HandleResult(await _service._recruiterService.GetAll(r => r.Educations, r => r.Experiences, r => r.Skills, r => r.JobPosts));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<RecruiterDto>> GetRecruiterById(Guid id)
+        public async Task<IActionResult> GetRecruiterById(Guid id)
         {
-            return await _service._recruiterService.GetRecruiterById(id);
+            return HandleResult(await _service._recruiterService.GetRecruiterById(id));
         }
 
         [HttpPost]
         public async Task<IActionResult> AddRecruiter(RecruiterDto recruiterDto)
         {
-            await _service._recruiterService.Add(recruiterDto);
-            return Ok();
+            
+            return HandleResult(await _service._recruiterService.Add(recruiterDto));
         }
 
         [HttpPut]
@@ -45,8 +45,8 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRecruiter(Guid id)
         {
-            await _service._recruiterService.Delete(id);
-            return Ok();
+            
+            return HandleResult(await _service._recruiterService.Delete(id));
         }
 
     }

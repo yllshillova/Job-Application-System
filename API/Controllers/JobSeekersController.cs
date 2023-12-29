@@ -15,15 +15,15 @@ namespace API.Controllers
 
         }
         [HttpGet]
-        public async Task<ActionResult<List<JobSeekerDto>>> GetAllJobSeekers()
+        public async Task<IActionResult> GetAllJobSeekers()
         {
-            return await _service._jobSeekerService.GetAll(u => u.Educations, u => u.Experiences, u => u.Skills);
+            return HandleResult(await _service._jobSeekerService.GetAll(u => u.Educations, u => u.Experiences, u => u.Skills));
         }
 
 
         [HttpGet("{id}")]
 
-        public async Task<ActionResult<JobSeekerDto>> GetJobSeekerById(Guid id)
+        public async Task<IActionResult> GetJobSeekerById(Guid id)
         {
 
             return Ok(await _service._jobSeekerService.GetJobSeekerById(id));
@@ -32,8 +32,8 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateJobSeeker(JobSeekerDto jobSeekerDto)
         {
-            await _service._jobSeekerService.Add(jobSeekerDto);
-            return Ok();
+
+            return HandleResult(await _service._jobSeekerService.Add(jobSeekerDto));
         }
 
         [HttpPut]
@@ -46,8 +46,8 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteJobSeeker(Guid id)
         {
-            await _service._jobSeekerService.Delete(id);
-            return Ok();
+
+            return HandleResult(await _service._jobSeekerService.Delete(id));
         }
 
     }

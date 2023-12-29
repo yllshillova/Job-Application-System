@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Base;
+using Application.Core;
 using AutoMapper;
 using Domain;
 using Domain.DTOs;
@@ -21,7 +22,7 @@ namespace Application.Services.RecruiterServices
             _context = context;
         }
 
-        public async Task<RecruiterDto> GetRecruiterById(Guid id)
+        public async Task<Result<RecruiterDto>> GetRecruiterById(Guid id)
         {
             var recruiter = await _context.Recruiters
             .Include(r => r.Educations)
@@ -32,7 +33,7 @@ namespace Application.Services.RecruiterServices
 
             var recruiterDto = _mapper.Map<RecruiterDto>(recruiter);
 
-            return recruiterDto;
+            return Result<RecruiterDto>.Success(recruiterDto);
         }
     }
 }

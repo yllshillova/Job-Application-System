@@ -1,12 +1,15 @@
 using System.Linq.Expressions;
+using Application.Core;
 using AutoMapper;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Persistence;
 
 namespace Application.Base
 {
-    public class EntityBaseRepository<TEntity, TDto> : IEntityBaseRepository<TEntity, TDto> where TEntity : class 
+    public class EntityBaseRepository<TEntity, TDto> : IEntityBaseRepository<TEntity, TDto>
+    where TEntity : class
     where TDto : class, new()
     {
         private readonly DataContext _context;
@@ -17,55 +20,70 @@ namespace Application.Base
             _context = context;
 
         }
-        public async Task<List<TDto>> GetAll()
+        public async Task<Result<List<TDto>>> GetAll()
         {
             var entities = await _context.Set<TEntity>().ToListAsync();
             var dtos = _mapper.Map<List<TDto>>(entities);
-            return dtos;
+            return Result<List<TDto>>.Success(dtos);
         }
 
-        public async Task<List<TDto>> GetAll(params Expression<Func<TEntity, object>>[] includeProperties)
+        public async Task<Result<List<TDto>>> GetAll(params Expression<Func<TEntity, object>>[] includeProperties)
         {
             IQueryable<TEntity> query = _context.Set<TEntity>();
             query = includeProperties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
             var entities = await query.ToListAsync();
             var dtosWithParams = _mapper.Map<List<TDto>>(entities);
-            return dtosWithParams;
+            return Result<List<TDto>>.Success(dtosWithParams);
         }
 
-        public async Task<TDto> GetById(Guid id)
+        public async Task<Result<TDto>> GetById(Guid id)
         {
             var entity = await _context.Set<TEntity>().FindAsync(id);
             var entityDto = _mapper.Map<TDto>(entity);
-            return entityDto;
+            return Result<TDto>.Success(entityDto);
         }
 
-        public async Task Add(TDto entityDto)
+        public async Task<Result<Unit>> Add(TDto entityDto)
         {
             var entity = _mapper.Map<TEntity>(entityDto);
             await _context.Set<TEntity>().AddAsync(entity);
-            await _context.SaveChangesAsync();
+            var result = await _context.SaveChangesAsync() > 0;
+            if (!result) return Result<Unit>.Failure("Failed to complete the creating action");
+
+            return Result<Unit>.Success(Unit.Value);
         }
 
-        public async Task Update(Guid id, TDto entityDto)
+        public async Task<Result<Unit>> Update(Guid id, TDto entityDto)
         {
             var entity = await _context.Set<TEntity>().FindAsync(id);
-            if (entity == null) return;
+            if (entity == null)
+            {
+                return Result<Unit>.Failure($"Entity with ID {id} was not found!");
+            }
 
             _mapper.Map(entityDto, entity);
 
             EntityEntry entityEntry = _context.Entry(entity);
             entityEntry.State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            var result = await _context.SaveChangesAsync() > 0;
+            if (!result) return Result<Unit>.Failure("Failed to complete the editing action!");
 
+            return Result<Unit>.Success(Unit.Value);
         }
-        public async Task Delete(Guid id)
+        public async Task<Result<Unit>> Delete(Guid id)
         {
             var entity = await _context.Set<TEntity>().FindAsync(id);
-            if (entity == null) return;
+            if (entity == null)
+            {
+                return Result<Unit>.Failure($"Entity with ID {id} was not found!");
+            }
             EntityEntry entityEntry = _context.Entry(entity);
             entityEntry.State = EntityState.Deleted;
-            await _context.SaveChangesAsync();
+
+            var result = await _context.SaveChangesAsync() > 0;
+            if (!result) return Result<Unit>.Failure("Failed to complete the deleting action!");
+
+            return Result<Unit>.Success(Unit.Value);
         }
     }
 }

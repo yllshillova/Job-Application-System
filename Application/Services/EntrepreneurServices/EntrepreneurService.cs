@@ -1,4 +1,5 @@
 using Application.Base;
+using Application.Core;
 using AutoMapper;
 using Domain;
 using Domain.DTOs.UserDTOs;
@@ -17,7 +18,7 @@ namespace Application.Services.EntrepreneurServices
             _context = context;
         }
 
-        public async Task<EntrepreneurDto> GetEntrepreneurById(Guid id)
+        public async Task<Result<EntrepreneurDto>> GetEntrepreneurById(Guid id)
         {
             var entrepreneur = await _context.Entrepreneurs
                 .Include(e => e.Skills)
@@ -27,7 +28,7 @@ namespace Application.Services.EntrepreneurServices
                 .FirstOrDefaultAsync(e => e.Id == id);
 
             var entrepreneurDto = _mapper.Map<EntrepreneurDto>(entrepreneur);
-            return entrepreneurDto;
+            return Result<EntrepreneurDto>.Success(entrepreneurDto);
         }
 
     }
