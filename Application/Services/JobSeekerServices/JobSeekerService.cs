@@ -31,5 +31,6 @@ namespace Application.Services
             var jobSeekerDto = _mapper.Map<JobSeekerDto>(jobSeeker);
             return jobSeekerDto;
         }
+
     }
 }

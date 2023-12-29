@@ -7,6 +7,8 @@ using Application.Services.EntrepreneurServices;
 using Application.Services.JobPostServices;
 using Application.Services.JobSeekerServices;
 using Application.Services.RecruiterServices;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -36,6 +38,7 @@ namespace API.Extensions
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<MainService>();
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+           
             return services;
         }
     }
