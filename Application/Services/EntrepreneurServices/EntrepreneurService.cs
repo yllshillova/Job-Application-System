@@ -18,6 +18,29 @@ namespace Application.Services.EntrepreneurServices
             _context = context;
         }
 
+        public async Task<Result<List<EntrepreneurDto>>> GetAllEntrepreneurs()
+        {
+            var entrepreneurs = await _context.Entrepreneurs
+                .Include(e => e.Skills)
+                .Include(e => e.Educations)
+                .Include(e => e.Experiences)
+                .Include(e => e.Companies)
+                    .ThenInclude(c => c.Recruiters)
+                    .ThenInclude(r => r.Educations)
+                .Include(e => e.Companies)
+                    .ThenInclude(c => c.Recruiters)
+                    .ThenInclude(r => r.Skills)
+                .Include(e => e.Companies)
+                    .ThenInclude(c => c.Recruiters)
+                    .ThenInclude(r => r.Experiences)
+                .Include(e => e.Companies)
+                    .ThenInclude(c => c.Recruiters)
+                    .ThenInclude(r => r.JobPosts)
+                .ToListAsync();
+                
+            var entrepreneurDtos = _mapper.Map<List<EntrepreneurDto>>(entrepreneurs);
+            return Result<List<EntrepreneurDto>>.Success(entrepreneurDtos);
+        }
         public async Task<Result<EntrepreneurDto>> GetEntrepreneurById(Guid id)
         {
             var entrepreneur = await _context.Entrepreneurs

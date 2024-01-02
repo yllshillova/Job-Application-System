@@ -20,7 +20,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllEntrepreneurs()
         {
-            return HandleResult(await _service._entrepreneurService.GetAll(e => e.Companies, e => e.Educations, e => e.Experiences, e => e.Skills));
+            return HandleResult(await _service._entrepreneurService.GetAllEntrepreneurs());
         }
 
         [HttpGet("{id}")]

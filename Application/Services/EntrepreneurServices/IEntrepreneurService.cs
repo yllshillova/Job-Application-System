@@ -11,6 +11,7 @@ namespace Application.Services.EntrepreneurServices
 {
     public interface IEntrepreneurService: IEntityBaseRepository<Entrepreneur,EntrepreneurDto>
     {
+        Task<Result<List<EntrepreneurDto>>> GetAllEntrepreneurs();
         Task<Result<EntrepreneurDto>> GetEntrepreneurById(Guid id);
     }
 }

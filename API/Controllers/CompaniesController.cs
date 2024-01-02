@@ -15,7 +15,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllCompanies()
         {
-            return HandleResult(await _service._companyService.GetAll(r => r.Recruiters));
+            return HandleResult(await _service._companyService.GetAllCompanies());
         }
 
         [HttpGet("{id}")]
@@ -23,7 +23,7 @@ namespace API.Controllers
         {
             return HandleResult(await _service._companyService.GetCompanyById(id));
         }
-        //TODO: guid id not being passed correctly
+        
         [HttpPost]
         public async Task<IActionResult> CreateCompany(CompanyDto company)
         {

@@ -9,10 +9,10 @@ using Domain.DTOs;
 
 namespace Application.Services.CompanyServices
 {
-    public interface ICompanyService: IEntityBaseRepository<Company,CompanyDto> 
-    {
-      
-      Task<Result<CompanyDto>> GetCompanyById(Guid id);
+  public interface ICompanyService : IEntityBaseRepository<Company, CompanyDto>
+  {
 
-    }
+    Task<Result<List<CompanyDto>>> GetAllCompanies();
+    Task<Result<CompanyDto>> GetCompanyById(Guid id);
+  }
 }

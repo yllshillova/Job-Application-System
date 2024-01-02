@@ -12,41 +12,11 @@ namespace Persistence
         {
             if (context.Users.Any()) return;
 
-            var users = new List<User>
-            {
-                // Regular Users
-                new User
-                {
-                    Name = "John",
-                    LastName = "Doe",
-                    Password = "password123",
-                    Email = "john.doe@example.com",
-                    Headline = "Software Developer",
-                    Summary = "Experienced software developer with a focus on web development.",
-                    Location = "New York",
-                    ContactNumber = "+1 (555) 123-4567", // veq dej qetu me bo Userin. 
-                    Skills = new List<Skill>
-                    {
-                        new Skill { SkillName = "C#", SkillDescription = "Programming language" },
-                        new Skill { SkillName = "ASP.NET Core", SkillDescription = "Web framework" },
-                        new Skill { SkillName = "SQL", SkillDescription = "Database management" }
-                    },
-                    Educations = new List<Education>
-                    {
-                        new Education { Institution = "University of New York", Degree = "B.Sc. in Computer Science", GraduationYear = "2015" },
-                        new Education { Institution = "Coding Bootcamp", Degree = "Full Stack Development", GraduationYear = "2017" },
-                        new Education { Institution = "Online Courses", Degree = "Data Science", GraduationYear = "2019" }
-                    },
-                    Experiences = new List<Experience>
-                    {
-                        new Experience { Position = "Software Engineer", CompanyName = "Tech Co.", Location = "New York", StartDate = DateTime.Parse("2020-01-01"), EndDate = null, Description = "Developing scalable web applications." },
-                        new Experience { Position = "Junior Developer", CompanyName = "Web Solutions", Location = "New York", StartDate = DateTime.Parse("2018-05-01"), EndDate = DateTime.Parse("2019-12-31"), Description = "Worked on various web projects." },
-                        new Experience { Position = "Intern", CompanyName = "Software Innovators", Location = "New York", StartDate = DateTime.Parse("2017-06-01"), EndDate = DateTime.Parse("2017-12-31"), Description = "Assisted in software development tasks." }
-                    }
-                },
-                
-                // Add more users of different types (JobSeeker, Recruiter, Entrepreneur) with skills, educations, and experiences.
 
+
+
+            var jobSeekers = new List<JobSeeker>
+            {
                 // Job Seekers
                 new JobSeeker
                 {
@@ -76,8 +46,15 @@ namespace Persistence
                         new Experience { Position = "Digital Marketing Specialist", CompanyName = "Tech Innovators", Location = "San Francisco", StartDate = DateTime.Parse("2015-05-01"), EndDate = DateTime.Parse("2016-12-31"), Description = "Managed online advertising campaigns." },
                         new Experience { Position = "Marketing Intern", CompanyName = "Marketing Pro", Location = "San Francisco", StartDate = DateTime.Parse("2014-06-01"), EndDate = DateTime.Parse("2014-12-31"), Description = "Assisted in various marketing projects." }
                     }
-                },
-                // Entrepreneurs
+                }
+
+            };
+
+            await context.JobSeekers.AddRangeAsync(jobSeekers);
+            await context.SaveChangesAsync();
+
+            var entrepreneurs = new List<Entrepreneur>
+            {
                 new Entrepreneur
                 {
                     Name = "Emily",
@@ -108,9 +85,10 @@ namespace Persistence
                     }
                 }
             };
-
-            await context.Users.AddRangeAsync(users);
+            await context.Entrepreneurs.AddRangeAsync(entrepreneurs);
             await context.SaveChangesAsync();
+
+
             var companies = new List<Company>
         {
             new Company
@@ -120,7 +98,7 @@ namespace Persistence
                 Location = "Silicon Valley",
                 Description = "Innovative technology solutions provider",
                 Email = "info@techsolutions.com",
-                EntrepreneurId = users[2].Id
+                EntrepreneurId = entrepreneurs[0].Id
             },
             new Company
             {
@@ -129,7 +107,7 @@ namespace Persistence
                 Location = "New York",
                 Description = "Leading marketing agency",
                 Email = "info@marketingpros.com",
-                EntrepreneurId = users[2].Id
+                EntrepreneurId = entrepreneurs[0].Id
             },
             new Company
             {
@@ -138,11 +116,64 @@ namespace Persistence
                 Location = "Boston",
                 Description = "Revolutionizing healthcare solutions",
                 Email = "info@healthinnovations.com",
-                EntrepreneurId = users[2].Id
+                EntrepreneurId = entrepreneurs[0].Id
             }
         };
 
             await context.Companies.AddRangeAsync(companies);
+            await context.SaveChangesAsync();
+
+
+            var recruiters = new List<Recruiter>
+            {
+                 new Recruiter
+                {
+                    Name = "user1",
+                    LastName = "userlastname1",
+                    Email = "test@test.com",
+                    Password = "test1",
+                    Headline = "headline1",
+                    Summary = "summary2",
+                    Location = "location1",
+                    ContactNumber = "contactnumber",
+                    CompanyId = companies[0].Id,
+                    Educations = new List<Education>
+                    {
+                        new Education
+                        {
+                            Institution = "Startup University",
+                            Degree = "Entrepreneurship",
+                            GraduationYear = "2021"
+                        }
+                    },
+                    Skills = new List<Skill>
+                    {
+                        new Skill
+                        {
+                            SkillName = "Product Development",
+                            SkillDescription = "Creating innovative products."
+                        },
+                        new Skill
+                        {
+                            SkillName = "Strategy",
+                            SkillDescription = "Developing business strategies."
+                        }
+                    },
+                    Experiences = new List<Experience>
+                    {
+                        new Experience
+                        {
+                            Position = "Tech Recruiter",
+                            CompanyName = "Tech Recruiting Co.",
+                            Location = "New York City",
+                            StartDate = DateTime.UtcNow.AddYears(-3),
+                            Description = "Recruitment for top tech companies."
+                        }
+                    }
+                }
+            };
+
+            await context.Recruiters.AddRangeAsync(recruiters);
             await context.SaveChangesAsync();
 
 
@@ -156,13 +187,12 @@ namespace Persistence
                     Description = "Looking for a skilled software developer.",
                     Requirements = "Experience in C# and ASP.NET Core.",
                     DatePosted = DateTime.UtcNow,
-                    RecruiterId = users[0].Id // Assuming the first user is a Recruiter
+                    RecruiterId = recruiters[0].Id
                 },
-                // Add more job posts as needed
+
             };
             await context.JobPosts.AddRangeAsync(jobPosts);
             await context.SaveChangesAsync();
-
 
         }
     }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Application.Base;
 using Application.Core;
@@ -20,6 +21,24 @@ namespace Application.Services.CompanyServices
         {
             _mapper = mapper;
             _context = context;
+        }
+
+        public async Task<Result<List<CompanyDto>>> GetAllCompanies()
+        {
+            var companies = await _context.Companies
+            .Include(c => c.Recruiters)
+                .ThenInclude(r => r.Educations)
+            .Include(c => c.Recruiters)
+                .ThenInclude(r => r.Skills)
+            .Include(c => c.Recruiters)
+                .ThenInclude(r => r.Experiences)
+            .Include(c => c.Recruiters)
+                .ThenInclude(r => r.JobPosts)
+            .Include(c => c.EmailNotifications)
+            .ToListAsync();
+            var companydtos = _mapper.Map<List<CompanyDto>>(companies);
+
+            return Result<List<CompanyDto>>.Success(companydtos);
         }
 
         public async Task<Result<CompanyDto>> GetCompanyById(Guid id)

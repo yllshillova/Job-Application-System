@@ -10,16 +10,15 @@ namespace Application.Core
     {
         public MappingProfiles()
         {
-            // User mapping
-            // CreateMap<User, UserDto>().ReverseMap();
-            CreateMap<JobSeeker,JobSeekerDto>().ReverseMap();
-            CreateMap<Recruiter,RecruiterDto>().ReverseMap();
-            CreateMap<Entrepreneur,EntrepreneurDto>().ReverseMap();
             CreateMap<Skill, SkillDto>().ReverseMap();
             CreateMap<Education, EducationDto>().ReverseMap();
             CreateMap<Experience, ExperienceDto>().ReverseMap();
+            CreateMap<JobSeeker, JobSeekerDto>().ReverseMap();
+            CreateMap<Recruiter, RecruiterDto>().ReverseMap();
+            CreateMap<Entrepreneur, EntrepreneurDto>().ReverseMap();
             CreateMap<Company, CompanyDto>().ReverseMap();
-
+            CreateMap<JobPost, JobPostDto>().ReverseMap();
         }
+
     }
 }
