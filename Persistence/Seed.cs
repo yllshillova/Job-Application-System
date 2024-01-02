@@ -145,6 +145,25 @@ namespace Persistence
             await context.Companies.AddRangeAsync(companies);
             await context.SaveChangesAsync();
 
+
+
+
+            var jobPosts = new List<JobPost>
+            {
+                new JobPost
+                {
+                    Title = "Software Developer",
+                    Description = "Looking for a skilled software developer.",
+                    Requirements = "Experience in C# and ASP.NET Core.",
+                    DatePosted = DateTime.UtcNow,
+                    RecruiterId = users[0].Id // Assuming the first user is a Recruiter
+                },
+                // Add more job posts as needed
+            };
+            await context.JobPosts.AddRangeAsync(jobPosts);
+            await context.SaveChangesAsync();
+
+
         }
     }
 }

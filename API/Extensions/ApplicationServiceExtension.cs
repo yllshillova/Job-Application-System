@@ -35,7 +35,6 @@ namespace API.Extensions
             services.AddScoped<IJobPostService, JobPostService>();
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<IApplicationService, ApplicationService>();
-            services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<MainService>();
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
            
