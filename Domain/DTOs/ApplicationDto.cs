@@ -15,15 +15,14 @@ namespace Domain.DTOs
         [DataType(DataType.DateTime)]
         public DateTime DateSubmitted { get; set; }
         [Required]
-        public ResumeStorageDto ResumeFile { get; set; }
+        public Guid ResumeFileId { get; set; }
+        // [Required]
+        // public byte[] ResumeFileData { get; set; }
         [Required]
         public Guid JobPostId { get; set; }
-        // public JobPostDto JobPost { get; set; }
         [Required]
         public Guid JobSeekerId { get; set; }
-        // public JobSeekerDto JobSeeker { get; set; }
         [Required]
         public Guid EmailNotificationId { get; set; }
-        // public EmailNotificationDto EmailNotification { get; set; }
     }
 }

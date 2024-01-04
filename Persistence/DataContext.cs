@@ -21,7 +21,7 @@ namespace Persistence
         public DbSet<JobSeeker> JobSeekers { get; set; }
         public DbSet<Recruiter> Recruiters { get; set; }
         public DbSet<JobPost> JobPosts { get; set; }
-        public DbSet<Application> Applications { get; set; }
+        public DbSet<ApplicationEntity> Applications { get; set; }
         public DbSet<EmailNotification> EmailNotifications { get; set; }
         public DbSet<Company> Companies { get; set; }
 

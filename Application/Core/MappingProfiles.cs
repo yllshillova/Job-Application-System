@@ -18,6 +18,10 @@ namespace Application.Core
             CreateMap<Entrepreneur, EntrepreneurDto>().ReverseMap();
             CreateMap<Company, CompanyDto>().ReverseMap();
             CreateMap<JobPost, JobPostDto>().ReverseMap();
+            CreateMap<ResumeStorage, ResumeStorageDto>().ReverseMap();
+            CreateMap<EmailNotification, EmailNotificationDto>().ReverseMap();
+            CreateMap<ApplicationEntity, ApplicationDto>().ReverseMap();
+
         }
 
     }

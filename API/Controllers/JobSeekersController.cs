@@ -50,5 +50,11 @@ namespace API.Controllers
             return HandleResult(await _service._jobSeekerService.Delete(id));
         }
 
+        [HttpPost("submitApplication")]
+        public async Task<IActionResult> SubmitApplication(Guid jobSeekerId, Guid jobPostId, IFormFile resume,Guid emailNotificationId)
+        {
+            return HandleResult(await _service._applicationService.SubmitApplication(jobSeekerId, jobPostId, resume, emailNotificationId));
+        }
+
     }
 }

@@ -21,7 +21,6 @@ namespace Domain.DTOs
         public DateTime DatePosted { get; set; }
         [Required]
         public Guid RecruiterId { get; set; }
-        // public RecruiterDto Recruiter { get; set; }
         public List<ApplicationDto> Applications { get; set; }
     }
 }

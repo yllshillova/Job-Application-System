@@ -8,6 +8,6 @@ namespace Domain.DTOs
         [Required]
         [StringLength(50, MinimumLength = 2)]
         public string FileName { get; set; }
-        // You may or may not include FileData in the DTO based on your needs
+        public byte[] FileData { get; set; }
     }
 }
