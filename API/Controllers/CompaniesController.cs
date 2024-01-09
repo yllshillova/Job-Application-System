@@ -1,4 +1,5 @@
 using Application.Services;
+using Application.Services.CompanyServices;
 using Domain.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,8 +7,8 @@ namespace API.Controllers
 {
     public class CompaniesController : BaseApiController
     {
-        private readonly MainService _service;
-        public CompaniesController(MainService service)
+        private readonly CompanyService _service;
+        public CompaniesController(CompanyService service)
         {
             _service = service;
         }
@@ -15,25 +16,25 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllCompanies()
         {
-            return HandleResult(await _service._companyService.GetAllCompanies());
+            return HandleResult(await _service.GetAllCompanies());
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCompanyById(Guid id)
         {
-            return HandleResult(await _service._companyService.GetCompanyById(id));
+            return HandleResult(await _service.GetCompanyById(id));
         }
         
         [HttpPost]
         public async Task<IActionResult> CreateCompany(CompanyDto company)
         {
-            return HandleResult( await _service._companyService.Add(company));
+            return HandleResult( await _service.Add(company));
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateCompany(Guid id, CompanyDto company){
             company.Id = id;
-            await _service._companyService.Update(id,company);
+            await _service.Update(id,company);
             return Ok();
         }
 
@@ -41,7 +42,7 @@ namespace API.Controllers
         public async Task<IActionResult> DeleteCompany(Guid id)
         {
             
-            return HandleResult(await _service._companyService.Delete(id));
+            return HandleResult(await _service.Delete(id));
         }
     }
 }

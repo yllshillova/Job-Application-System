@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Application.Services;
+using Application.Services.EntrepreneurServices;
 using Domain.DTOs.UserDTOs;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,8 +12,8 @@ namespace API.Controllers
 {
     public class EntrepreneursController : BaseApiController
     {
-        private readonly MainService _service;
-        public EntrepreneursController(MainService service)
+        private readonly EntrepreneurService _service;
+        public EntrepreneursController(EntrepreneurService service)
         {
             _service = service;
         }
@@ -20,27 +21,27 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllEntrepreneurs()
         {
-            return HandleResult(await _service._entrepreneurService.GetAllEntrepreneurs());
+            return HandleResult(await _service.GetAllEntrepreneurs());
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEntrepreneurById(Guid id)
         {
-            return HandleResult(await _service._entrepreneurService.GetEntrepreneurById(id));
+            return HandleResult(await _service.GetEntrepreneurById(id));
         }
 
         [HttpPost]
         public async Task<IActionResult> AddEntrepreneur(EntrepreneurDto entrepreneurDto)
         {
             
-            return HandleResult(await _service._entrepreneurService.Add(entrepreneurDto));
+            return HandleResult(await _service.Add(entrepreneurDto));
         }
 
         [HttpPut]
         public async Task<IActionResult> EditEntrepreneur(Guid id, EntrepreneurDto entrepreneurDto)
         {
             entrepreneurDto.Id = id;
-            await _service._entrepreneurService.Update(id, entrepreneurDto);
+            await _service.Update(id, entrepreneurDto);
             return Ok();
         }
 
@@ -48,7 +49,7 @@ namespace API.Controllers
         public async Task<IActionResult> DeleteEntrepreneur(Guid id)
         {
             
-            return HandleResult(await _service._entrepreneurService.Delete(id));
+            return HandleResult(await _service.Delete(id));
         }
 
 

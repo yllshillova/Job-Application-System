@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Services;
+using Application.Services.RecruiterServices;
 using Domain.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,8 +11,8 @@ namespace API.Controllers
 {
     public class RecruitersController : BaseApiController
     {
-        private readonly MainService _service;
-        public RecruitersController(MainService service)
+        private readonly RecruiterService _service;
+        public RecruitersController(RecruiterService service)
         {
             _service = service;
         }
@@ -19,26 +20,26 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllRecruiters()
         {
-            return HandleResult(await _service._recruiterService.GetAll(r => r.Educations, r => r.Experiences, r => r.Skills, r => r.JobPosts));
+            return HandleResult(await _service.GetAll(r => r.Educations, r => r.Experiences, r => r.Skills, r => r.JobPosts));
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetRecruiterById(Guid id)
         {
-            return HandleResult(await _service._recruiterService.GetRecruiterById(id));
+            return HandleResult(await _service.GetRecruiterById(id));
         }
 
         [HttpPost]
         public async Task<IActionResult> AddRecruiter(RecruiterDto recruiterDto)
         {
             
-            return HandleResult(await _service._recruiterService.Add(recruiterDto));
+            return HandleResult(await _service.Add(recruiterDto));
         }
 
         [HttpPut]
         public async Task<IActionResult> EditRecruiter(Guid id, RecruiterDto updatedRecruiterDto){
             updatedRecruiterDto.Id = id;
-            await _service._recruiterService.Update(id, updatedRecruiterDto);
+            await _service.Update(id, updatedRecruiterDto);
             return Ok();
         }
 
@@ -46,7 +47,7 @@ namespace API.Controllers
         public async Task<IActionResult> DeleteRecruiter(Guid id)
         {
             
-            return HandleResult(await _service._recruiterService.Delete(id));
+            return HandleResult(await _service.Delete(id));
         }
 
     }

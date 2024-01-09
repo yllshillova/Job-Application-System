@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Services;
+using Application.Services.EmailNotificationServices;
 using Domain.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,8 +11,8 @@ namespace API.Controllers
 {
     public class EmailNotificationsController : BaseApiController
     {
-        private readonly MainService _service;
-        public EmailNotificationsController(MainService service)
+        private readonly EmailNotificationService _service;
+        public EmailNotificationsController(EmailNotificationService service)
         {
             _service = service;
         }
@@ -19,7 +20,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllEmailnotifications()
         {
-            return HandleResult(await _service._emailNotificationService.GetAll());
+            return HandleResult(await _service.GetAll());
         }
 
 
@@ -28,28 +29,28 @@ namespace API.Controllers
         public async Task<IActionResult> GetEmailnotificationById(Guid id)
         {
 
-            return Ok(await _service._emailNotificationService.GetById(id));
+            return Ok(await _service.GetById(id));
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateEmailNotification(EmailNotificationDto emailNotificationDto)
         {
 
-            return HandleResult(await _service._emailNotificationService.Add(emailNotificationDto));
+            return HandleResult(await _service.Add(emailNotificationDto));
         }
 
         [HttpPut]
         public async Task<IActionResult> EditEmailNotification(Guid id, EmailNotificationDto emailNotificationDto)
         {
             emailNotificationDto.Id = id;
-            await _service._emailNotificationService.Update(id, emailNotificationDto);
+            await _service.Update(id, emailNotificationDto);
             return Ok();
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEmailNotification(Guid id)
         {
 
-            return HandleResult(await _service._emailNotificationService.Delete(id));
+            return HandleResult(await _service.Delete(id));
         }
 
        
