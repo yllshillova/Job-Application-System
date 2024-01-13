@@ -11,8 +11,8 @@ namespace API.Controllers
 {
     public class RecruitersController : BaseApiController
     {
-        private readonly RecruiterService _service;
-        public RecruitersController(RecruiterService service)
+        private readonly IRecruiterService _service;
+        public RecruitersController(IRecruiterService service)
         {
             _service = service;
         }

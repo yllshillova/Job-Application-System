@@ -7,8 +7,8 @@ namespace API.Controllers
 {
     public class JobPostsController:BaseApiController
     {
-        private readonly JobPostService _service;
-        public JobPostsController(JobPostService service)
+        private readonly IJobPostService _service;
+        public JobPostsController(IJobPostService service)
         {
             _service = service;
             

@@ -30,6 +30,7 @@ namespace Application.Services.RecruiterServices
             .Include(r => r.Skills)
             .Include(r => r.JobPosts)
             .FirstOrDefaultAsync(r => r.Id == id);
+            
 
             var recruiterDto = _mapper.Map<RecruiterDto>(recruiter);
 

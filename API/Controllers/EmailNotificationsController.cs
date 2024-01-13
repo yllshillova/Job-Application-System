@@ -11,8 +11,8 @@ namespace API.Controllers
 {
     public class EmailNotificationsController : BaseApiController
     {
-        private readonly EmailNotificationService _service;
-        public EmailNotificationsController(EmailNotificationService service)
+        private readonly IEmailNotificationService _service;
+        public EmailNotificationsController(IEmailNotificationService service)
         {
             _service = service;
         }

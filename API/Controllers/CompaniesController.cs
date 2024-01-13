@@ -7,8 +7,8 @@ namespace API.Controllers
 {
     public class CompaniesController : BaseApiController
     {
-        private readonly CompanyService _service;
-        public CompaniesController(CompanyService service)
+        private readonly ICompanyService _service;
+        public CompaniesController(ICompanyService service)
         {
             _service = service;
         }

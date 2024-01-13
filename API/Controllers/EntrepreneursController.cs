@@ -12,8 +12,8 @@ namespace API.Controllers
 {
     public class EntrepreneursController : BaseApiController
     {
-        private readonly EntrepreneurService _service;
-        public EntrepreneursController(EntrepreneurService service)
+        private readonly IEntrepreneurService _service;
+        public EntrepreneursController(IEntrepreneurService service)
         {
             _service = service;
         }

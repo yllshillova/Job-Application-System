@@ -7,12 +7,12 @@ namespace DTOs
         public Guid Id { get; set; }
         [Required]
         [StringLength(50, MinimumLength = 2)]
-        public string Name { get; set; }
+        public string UserName { get; set; }
         [Required]
         [StringLength(50, MinimumLength = 2)]
-        public string LastName { get; set; }
+        public string UserLastName { get; set; }
         [Required]
-        public string Password { get; set; }
+        public string PasswordHash { get; set; }
         [Required]
         [EmailAddress]
         public string Email { get; set; }
