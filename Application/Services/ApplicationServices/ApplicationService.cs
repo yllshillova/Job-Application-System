@@ -26,7 +26,7 @@ namespace Application.Services.ApplicationServices
 
         public async Task<Result<ApplicationDto>> SubmitApplication(Guid jobSeekerId, Guid jobPostId, IFormFile resume, Guid emailNotificationId)
         {
-            var jobSeeker = await _context.JobSeekers
+            var jobSeeker = await _context.Users.OfType<JobSeeker>()
                            .Include(js => js.Educations)
                            .Include(js => js.Experiences)
                            .Include(js => js.Skills)

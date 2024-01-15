@@ -20,7 +20,6 @@ namespace API.Controllers
             return HandleResult(await _service._jobSeekerService.GetAll(u => u.Educations, u => u.Experiences, u => u.Skills));
         }
 
-
         [HttpGet("{id}")]
 
         public async Task<IActionResult> GetJobSeekerById(Guid id)
@@ -51,7 +50,7 @@ namespace API.Controllers
         }
 
         [HttpPost("submitApplication")]
-        public async Task<IActionResult> SubmitApplication(Guid jobSeekerId, Guid jobPostId, IFormFile resume,Guid emailNotificationId)
+        public async Task<IActionResult> SubmitApplication(Guid jobSeekerId, Guid jobPostId, IFormFile resume, Guid emailNotificationId)
         {
             return HandleResult(await _service._applicationService.SubmitApplication(jobSeekerId, jobPostId, resume, emailNotificationId));
         }

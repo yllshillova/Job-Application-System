@@ -24,7 +24,7 @@ namespace Application.Services.RecruiterServices
 
         public async Task<Result<RecruiterDto>> GetRecruiterById(Guid id)
         {
-            var recruiter = await _context.Recruiters
+            var recruiter = await _context.Users.OfType<Recruiter>()
             .Include(r => r.Educations)
             .Include(r => r.Experiences)
             .Include(r => r.Skills)

@@ -22,7 +22,7 @@ namespace Application.Services
 
         public async Task<Result<JobSeekerDto>> GetJobSeekerById(Guid id)
         {
-            var jobSeeker = await _context.JobSeekers
+            var jobSeeker = await _context.Users.OfType<JobSeeker>()
                 .Include(e => e.Skills)
                 .Include(e => e.Educations)
                 .Include(e => e.Experiences)
@@ -32,6 +32,7 @@ namespace Application.Services
             var jobSeekerDto = _mapper.Map<JobSeekerDto>(jobSeeker);
             return Result<JobSeekerDto>.Success(jobSeekerDto);
         }
+
 
     }
 }

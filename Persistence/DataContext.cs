@@ -14,9 +14,9 @@ namespace Persistence
         public DbSet<Skill> Skills { get; set; }
         public DbSet<Education> Educations { get; set; }
         public DbSet<Experience> Experiences { get; set; }
-        public DbSet<Entrepreneur> Entrepreneurs { get; set; }
-        public DbSet<JobSeeker> JobSeekers { get; set; }
-        public DbSet<Recruiter> Recruiters { get; set; }
+        // public DbSet<Entrepreneur> Entrepreneurs { get; set; }
+        // public DbSet<JobSeeker> JobSeekers { get; set; }
+        // public DbSet<Recruiter> Recruiters { get; set; }
         public DbSet<JobPost> JobPosts { get; set; }
         public DbSet<ApplicationEntity> Applications { get; set; }
         public DbSet<EmailNotification> EmailNotifications { get; set; }
@@ -26,9 +26,9 @@ namespace Persistence
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<JobSeeker>().ToTable("JobSeekers");
-            modelBuilder.Entity<Recruiter>().ToTable("Recruiters");
-            modelBuilder.Entity<Entrepreneur>().ToTable("Entrepreneurs");
+            // modelBuilder.Entity<JobSeeker>().ToTable("JobSeekers");
+            // modelBuilder.Entity<Recruiter>().ToTable("Recruiters");
+            // modelBuilder.Entity<Entrepreneur>().ToTable("Entrepreneurs");
 
 
             //     modelBuilder.Entity<Education>()

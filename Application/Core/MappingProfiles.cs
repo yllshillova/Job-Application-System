@@ -11,6 +11,7 @@ namespace Application.Core
         public MappingProfiles()
         {
             CreateMap<Skill, SkillDto>().ReverseMap();
+            CreateMap<User, UserDto>().ReverseMap();
             CreateMap<Education, EducationDto>().ReverseMap();
             CreateMap<Experience, ExperienceDto>().ReverseMap();
             CreateMap<JobSeeker, JobSeekerDto>().ReverseMap();

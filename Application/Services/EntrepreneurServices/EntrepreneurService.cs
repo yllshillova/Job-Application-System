@@ -20,7 +20,7 @@ namespace Application.Services.EntrepreneurServices
 
         public async Task<Result<List<EntrepreneurDto>>> GetAllEntrepreneurs()
         {
-            var entrepreneurs = await _context.Entrepreneurs
+            var entrepreneurs = await _context.Users.OfType<Entrepreneur>()
                 .Include(e => e.Skills)
                 .Include(e => e.Educations)
                 .Include(e => e.Experiences)
@@ -43,7 +43,7 @@ namespace Application.Services.EntrepreneurServices
         }
         public async Task<Result<EntrepreneurDto>> GetEntrepreneurById(Guid id)
         {
-            var entrepreneur = await _context.Entrepreneurs
+            var entrepreneur = await _context.Users.OfType<Entrepreneur>()
                 .Include(e => e.Skills)
                 .Include(e => e.Educations)
                 .Include(e => e.Experiences)
