@@ -37,19 +37,19 @@ namespace Application.Services.ApplicationServices
 
             if (jobSeeker == null || jobPost == null)
             {
-                return Result<ApplicationDto>.Failure("Job seeker or job post not found.");
+                return Result<ApplicationDto>.Failure(ResultErrorType.NotFound);
             }
 
             if (resume == null)
             {
-                return Result<ApplicationDto>.Failure("Invalid file");
+                return Result<ApplicationDto>.Failure(ResultErrorType.NotFound);
             }
             var allowedExtensions = new[] { ".pdf", ".doc", ".docx" };
 
             var validationResult = ValidateFile(resume, allowedExtensions);
             if (!validationResult.IsSuccess)
             {
-                return Result<ApplicationDto>.Failure(validationResult.Error);
+                return Result<ApplicationDto>.Failure(validationResult.ErrorType);
             }
 
 
@@ -83,14 +83,14 @@ namespace Application.Services.ApplicationServices
         {
             if (file == null || file.Length == 0)
             {
-                return Result<string>.Failure("Invalid file");
+                return Result<string>.Failure(ResultErrorType.NotFound);
             }
 
             var fileExtension = Path.GetExtension(file.FileName);
 
             if (!allowedExtensions.Contains(fileExtension.ToLower()))
             {
-                return Result<string>.Failure("Invalid file type");
+                return Result<string>.Failure(ResultErrorType.BadRequest);
             }
 
             return Result<string>.Success("File is valid");

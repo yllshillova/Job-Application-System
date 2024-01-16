@@ -48,7 +48,7 @@ namespace Application.Base
             var entity = _mapper.Map<TEntity>(entityDto);
             await _context.Set<TEntity>().AddAsync(entity);
             var result = await _context.SaveChangesAsync() > 0;
-            if (!result) return Result<Unit>.Failure("Failed to complete the creating action");
+            if (!result) return Result<Unit>.Failure(ResultErrorType.BadRequest);
 
             return Result<Unit>.Success(Unit.Value);
         }
@@ -58,7 +58,7 @@ namespace Application.Base
             var entity = await _context.Set<TEntity>().FindAsync(id);
             if (entity == null)
             {
-                return Result<Unit>.Failure($"Entity with ID {id} was not found!");
+                return Result<Unit>.Failure(ResultErrorType.NotFound);
             }
 
             _mapper.Map(entityDto, entity);
@@ -66,7 +66,7 @@ namespace Application.Base
             EntityEntry entityEntry = _context.Entry(entity);
             entityEntry.State = EntityState.Modified;
             var result = await _context.SaveChangesAsync() > 0;
-            if (!result) return Result<Unit>.Failure("Failed to complete the editing action!");
+            if (!result) return Result<Unit>.Failure(ResultErrorType.BadRequest);
 
             return Result<Unit>.Success(Unit.Value);
         }
@@ -75,13 +75,13 @@ namespace Application.Base
             var entity = await _context.Set<TEntity>().FindAsync(id);
             if (entity == null)
             {
-                return Result<Unit>.Failure($"Entity with ID {id} was not found!");
+                return Result<Unit>.Failure(ResultErrorType.NotFound);
             }
             EntityEntry entityEntry = _context.Entry(entity);
             entityEntry.State = EntityState.Deleted;
 
             var result = await _context.SaveChangesAsync() > 0;
-            if (!result) return Result<Unit>.Failure("Failed to complete the deleting action!");
+            if (!result) return Result<Unit>.Failure(ResultErrorType.BadRequest);
 
             return Result<Unit>.Success(Unit.Value);
         }

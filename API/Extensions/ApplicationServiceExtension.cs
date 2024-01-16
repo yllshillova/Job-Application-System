@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 using Application.Core;
 using Application.Services;
+using Application.Services.AccountServices;
 using Application.Services.ApplicationServices;
 using Application.Services.CompanyServices;
 using Application.Services.EmailNotificationServices;
@@ -34,6 +35,7 @@ namespace API.Extensions
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<IApplicationService, ApplicationService>();
             services.AddScoped<IEmailNotificationService, EmailNotificationService>();
+            services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<MainService>();
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
            

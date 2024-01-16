@@ -18,6 +18,8 @@ builder.Services.AddIdentityServices(builder.Configuration);
 var app = builder.Build();
 
 
+app.UseAuthorization();
+
 // Configure the HTTP request pipeline.
 
 app.UseMiddleware<ExceptionMiddleware>();

@@ -1,6 +1,7 @@
 using AutoMapper;
 using Domain;
 using Domain.DTOs;
+using Domain.DTOs.AccountDTOs;
 using Domain.DTOs.UserDTOs;
 using DTOs;
 
