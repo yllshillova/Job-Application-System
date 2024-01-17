@@ -51,7 +51,7 @@ namespace API.Extensions
             .AddRoles<IdentityRole<Guid>>()
             .AddEntityFrameworkStores<DataContext>();
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Iww4kxaMt6GzDUj4vbqnJPXgIadhgeNMvBr55NNjga7HBvDGzajJ8YbN8ecMeCZe"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(opt => 
