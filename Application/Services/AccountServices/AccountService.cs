@@ -16,10 +16,12 @@ public class AccountService : IAccountService
 {
     private readonly UserManager<User> _userManager;
     private readonly IMapper _mapper;
-    public AccountService(UserManager<User> userManager, IMapper mapper)
+    private readonly TokenService _tokenService;
+    public AccountService(UserManager<User> userManager, IMapper mapper, TokenService tokenService)
     {
         _mapper = mapper;
         _userManager = userManager;
+        _tokenService = tokenService;
     }
 
     public async Task<Result<UserDto>> Login(LoginDto loginDto)
@@ -31,7 +33,10 @@ public class AccountService : IAccountService
 
         if (result)
         {
+            
             var userDto = _mapper.Map<UserDto>(user);
+            userDto.Token = _tokenService.CreateToken(user);
+
             return Result<UserDto>.Success(userDto);
         }
         return Result<UserDto>.Failure(ResultErrorType.Unauthorized);

@@ -17,7 +17,7 @@ public class TokenService
 
 
         };
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super secret key"));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Iww4kxaMt6GzDUj4vbqnJPXgIadhgeNMvBr55NNjga7HBvDGzajJ8YbN8ecMeCZe"));
         var creds = new SigningCredentials(key , SecurityAlgorithms.HmacSha512Signature);
 
         var tokenDescriptor = new SecurityTokenDescriptor

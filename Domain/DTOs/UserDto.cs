@@ -21,6 +21,7 @@ namespace DTOs
         public string Location { get; set; }
         [Phone]
         public string ContactNumber { get; set; }
+        public string Token { get; set; }
         public List<SkillDto> Skills { get; set; }
         public List<EducationDto> Educations { get; set; }
         public List<ExperienceDto> Experiences { get; set; }
