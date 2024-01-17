@@ -7,10 +7,12 @@ using AutoMapper;
 using Domain;
 using Domain.DTOs.AccountDTOs;
 using DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
+[AllowAnonymous]
 [ApiController]
 [Route("api/[controller]")]
 public class AccountController : BaseApiController
