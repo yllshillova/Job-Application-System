@@ -19,6 +19,7 @@ public class TokenService
         };
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super secret key"));
         var creds = new SigningCredentials(key , SecurityAlgorithms.HmacSha512Signature);
+
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
@@ -26,5 +27,9 @@ public class TokenService
             SigningCredentials = creds
         };
         var tokenHandler = new JwtSecurityTokenHandler();
+
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+
+        return tokenHandler.WriteToken(token);
     }
 }

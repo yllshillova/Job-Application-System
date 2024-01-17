@@ -9,8 +9,10 @@ using Application.Services.EntrepreneurServices;
 using Application.Services.JobPostServices;
 using Application.Services.JobSeekerServices;
 using Application.Services.RecruiterServices;
+using Domain;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -38,7 +40,14 @@ namespace API.Extensions
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<MainService>();
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
-           
+            services.AddIdentityCore<User>(opt =>
+            {
+                opt.Password.RequireNonAlphanumeric = false;
+                opt.User.RequireUniqueEmail = true;
+            })
+            .AddRoles<IdentityRole<Guid>>()
+            .AddEntityFrameworkStores<DataContext>();
+            services.AddScoped<TokenService>();
             return services;
         }
     }
