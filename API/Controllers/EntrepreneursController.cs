@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Application.Services;
 using Application.Services.EntrepreneurServices;
 using Domain.DTOs.UserDTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -18,6 +19,7 @@ namespace API.Controllers
             _service = service;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllEntrepreneurs()
         {

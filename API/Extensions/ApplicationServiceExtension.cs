@@ -1,3 +1,4 @@
+using System.Text;
 using System.Text.Json.Serialization;
 using Application.Core;
 using Application.Services;
@@ -12,8 +13,10 @@ using Application.Services.RecruiterServices;
 using Domain;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Persistence;
 
 namespace API.Extensions
@@ -47,6 +50,23 @@ namespace API.Extensions
             })
             .AddRoles<IdentityRole<Guid>>()
             .AddEntityFrameworkStores<DataContext>();
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Iww4kxaMt6GzDUj4vbqnJPXgIadhgeNMvBr55NNjga7HBvDGzajJ8YbN8ecMeCZe"));
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(opt => 
+                {
+                    opt.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = key,
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+
+                    };
+                });
+
+
             services.AddScoped<TokenService>();
             return services;
         }

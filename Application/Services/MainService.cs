@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Services.AccountServices;
 using Application.Services.ApplicationServices;
 using Application.Services.CompanyServices;
 using Application.Services.EmailNotificationServices;
@@ -21,10 +22,10 @@ namespace Application.Services
         public readonly IRecruiterService _recruiterService;
         public readonly IEntrepreneurService _entrepreneurService;
         public readonly IEmailNotificationService _emailNotificationService;
-
+        public readonly IAccountService _accountService;
         public MainService(IApplicationService applicationService,IJobPostService jobPostService,
          ICompanyService companyService, IJobSeekerService jobSeekerService, IRecruiterService recruiterService,
-         IEntrepreneurService entrepreneurService, IEmailNotificationService emailNotificationService)
+         IEntrepreneurService entrepreneurService, IEmailNotificationService emailNotificationService, IAccountService accountService)
         {
             _emailNotificationService = emailNotificationService;
             _entrepreneurService = entrepreneurService;
@@ -33,6 +34,7 @@ namespace Application.Services
             _companyService =companyService;
             _jobPostService = jobPostService;
             _jobSeekerService = jobSeekerService;
+            _accountService = accountService;
         }
         
     }
