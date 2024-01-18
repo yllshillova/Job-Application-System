@@ -6,7 +6,7 @@ public enum ResultErrorType
 {
     [Description("Unauthorized attempt!")]
     Unauthorized,
-    [Description("Not found")]
+    [Description("Not found!")]
     NotFound,
     [Description("Bad Request!")]
     BadRequest

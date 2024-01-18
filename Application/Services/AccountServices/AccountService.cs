@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Application.Core;
 using AutoMapper;
 using Domain;
@@ -6,16 +7,17 @@ using Domain.DTOs.AccountDTOs;
 using Domain.DTOs.UserDTOs;
 using DTOs;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services.AccountServices;
 
 public class AccountService : IAccountService
 {
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<AppUser> _userManager;
     private readonly IMapper _mapper;
     private readonly TokenService _tokenService;
-    public AccountService(UserManager<User> userManager, IMapper mapper, TokenService tokenService)
+    public AccountService(UserManager<AppUser> userManager, IMapper mapper, TokenService tokenService)
     {
         _mapper = mapper;
         _userManager = userManager;
@@ -33,7 +35,7 @@ public class AccountService : IAccountService
         {
 
             var userDto = _mapper.Map<UserDto>(user);
-            userDto.Token = _tokenService.CreateToken(user);
+            userDto.Token = await _tokenService.CreateToken(user);
 
             return Result<UserDto>.Success(userDto);
         };
@@ -48,12 +50,12 @@ public class AccountService : IAccountService
             return Result<UserDto>.Failure(ResultErrorType.BadRequest);
         }
 
-        User newUser = roleName switch
+        AppUser newUser = roleName switch
         {
             "JobSeeker" => _mapper.Map<JobSeeker>(registerDto),
             "Entrepreneur" => _mapper.Map<Entrepreneur>(registerDto),
             "Recruiter" => _mapper.Map<Recruiter>(registerDto),
-            _ => _mapper.Map<User>(registerDto)
+            _ => _mapper.Map<AppUser>(registerDto)
         };
 
         var result = await _userManager.CreateAsync(newUser, registerDto.Password);
@@ -69,7 +71,7 @@ public class AccountService : IAccountService
 
             if (userDto != null)
             {
-                userDto.Token = _tokenService.CreateToken(newUser);
+                userDto.Token =await  _tokenService.CreateToken(newUser);
                 return Result<UserDto>.Success(userDto);
             }
 
@@ -78,5 +80,35 @@ public class AccountService : IAccountService
 
         return Result<UserDto>.Failure(ResultErrorType.BadRequest);
     }
-    
+
+    public async Task<Result<UserDto>> GetCurrentUser(ClaimsPrincipal userPrincipal)
+    {
+        if (userPrincipal == null)
+        {
+            return Result<UserDto>.Failure(ResultErrorType.BadRequest);
+        }
+        var userEmail = userPrincipal.FindFirstValue(ClaimTypes.Email);
+
+        if (string.IsNullOrEmpty(userEmail))
+        {
+            return Result<UserDto>.Failure(ResultErrorType.BadRequest);
+        }
+        var user = await _userManager.FindByEmailAsync(userEmail);
+
+        if (user == null)
+        {
+            return Result<UserDto>.Failure(ResultErrorType.NotFound);
+        }
+        var userDto = _mapper.Map<UserDto>(user);
+
+        if (userDto == null)
+        {
+            return Result<UserDto>.Failure(ResultErrorType.BadRequest);
+        }
+        userDto.Token = await _tokenService.CreateToken(user);
+
+        return Result<UserDto>.Success(userDto);
+    }
+
+
 }

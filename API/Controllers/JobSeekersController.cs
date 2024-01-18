@@ -2,6 +2,7 @@ using Application.Services;
 using Domain;
 using Domain.DTOs;
 using DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -14,6 +15,7 @@ namespace API.Controllers
             _service = service;
 
         }
+        [Authorize(Roles = "JobSeeker")]
         [HttpGet]
         public async Task<IActionResult> GetAllJobSeekers()
         {

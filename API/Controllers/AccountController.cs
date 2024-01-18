@@ -1,15 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using Application.Services.AccountServices;
-using AutoMapper;
-using Domain;
 using Domain.DTOs.AccountDTOs;
 using DTOs;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -21,7 +14,6 @@ public class AccountController : BaseApiController
         public AccountController(IAccountService service)
         {
                 _service = service;
-
         }
 
         [AllowAnonymous]
@@ -37,5 +29,11 @@ public class AccountController : BaseApiController
         {
                 return HandleResult(await _service.Register(registerDto, roleName));
         }
+        [HttpGet("current-user")]
+        public async Task<ActionResult<UserDto>> GetCurrentUser()
+        {
+                return HandleResult(await _service.GetCurrentUser(User));
+        }
+
 
 }

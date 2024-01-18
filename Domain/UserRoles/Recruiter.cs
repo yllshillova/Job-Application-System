@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain
 {
-    public class Recruiter : User
+    public class Recruiter : AppUser
     {
         public Guid CompanyId { get; set; }
         [ForeignKey("CompanyId")]

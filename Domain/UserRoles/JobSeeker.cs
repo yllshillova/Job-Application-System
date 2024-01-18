@@ -1,6 +1,6 @@
 namespace Domain
 {
-    public class JobSeeker : User
+    public class JobSeeker : AppUser
     {
         public List<ApplicationEntity> Applications { get; set; }
     }

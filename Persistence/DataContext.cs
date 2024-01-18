@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Persistence
 {
-    public class DataContext : IdentityDbContext<User, IdentityRole<Guid> ,Guid>
+    public class DataContext : IdentityDbContext<AppUser, IdentityRole<Guid> ,Guid>
     {
         public DataContext(DbContextOptions options) : base(options)
         {

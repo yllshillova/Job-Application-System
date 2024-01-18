@@ -9,7 +9,7 @@ namespace Persistence
 {
     public class Seed
     {
-        public static async Task SeedData(DataContext context, UserManager<User> userManager, RoleManager<IdentityRole<Guid>> roleManager)
+        public static async Task SeedData(DataContext context, UserManager<AppUser> userManager, RoleManager<IdentityRole<Guid>> roleManager)
         {
 
 
@@ -27,7 +27,10 @@ namespace Persistence
             {
                 await roleManager.CreateAsync(new IdentityRole<Guid>("Entrepreneur"));
             }
-
+              if (!await roleManager.RoleExistsAsync("Admin"))
+            {
+                await roleManager.CreateAsync(new IdentityRole<Guid>("Admin"));
+            }
             await context.SaveChangesAsync();
 
             if (!userManager.Users.Any())

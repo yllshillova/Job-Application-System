@@ -29,35 +29,31 @@ namespace API.Extensions
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
-            services.AddSwaggerGen(opt =>
+            services.AddSwaggerGen(c =>
             {
-                opt.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                var jwtSecurityScheme = new OpenApiSecurityScheme
                 {
-                    Description =
-                                "JWT Authorization header using the Bearer scheme. \r\n\r\n " +
-                                "Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\n" +
-                                "Example: \"Bearer 12345abcdef\"",
-                                Name = "Authorization",
+                    BearerFormat = "JWT",
+                    Name = "Authorization",
                     In = ParameterLocation.Header,
-                    Scheme = JwtBearerDefaults.AuthenticationScheme
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = JwtBearerDefaults.AuthenticationScheme,
+                    Description = "Put Bearer + your token in the box below",
+                    Reference = new OpenApiReference
+                    {
+                        Id = JwtBearerDefaults.AuthenticationScheme,
+                        Type = ReferenceType.SecurityScheme
+                    }
+                };
+
+                c.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        jwtSecurityScheme, Array.Empty<string>()
+                    }
                 });
-                opt.AddSecurityRequirement(new OpenApiSecurityRequirement()
-{
-    {
-       new OpenApiSecurityScheme
-        {
-            Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        },
-            Scheme = "oauth2",
-            Name = "Bearer",
-            In = ParameterLocation.Header
-        },
-        new List<string>()
-    }
-});
             });
             services.AddDbContext<DataContext>(opt =>
             {
@@ -73,7 +69,7 @@ namespace API.Extensions
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<MainService>();
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
-            services.AddIdentityCore<User>(opt =>
+            services.AddIdentityCore<AppUser>(opt =>
             {
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.User.RequireUniqueEmail = true;
@@ -84,17 +80,17 @@ namespace API.Extensions
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(opt =>
+            .AddJwtBearer(opt =>
+            {
+                opt.TokenValidationParameters = new TokenValidationParameters
                 {
-                    opt.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = key,
-                        ValidateIssuer = false,
-                        ValidateAudience = false
-
-                    };
-                });
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = key
+                };
+            });
 
 
             services.AddScoped<TokenService>();
