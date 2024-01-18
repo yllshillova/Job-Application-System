@@ -64,7 +64,7 @@ public class AccountService : IAccountService
                 JobSeeker jobSeeker => _mapper.Map<JobSeekerDto>(jobSeeker),
                 Entrepreneur entrepreneur => _mapper.Map<EntrepreneurDto>(entrepreneur),
                 Recruiter recruiter => _mapper.Map<RecruiterDto>(recruiter),
-                _ => null 
+                _ => null
             };
 
             if (userDto != null)
@@ -78,4 +78,5 @@ public class AccountService : IAccountService
 
         return Result<UserDto>.Failure(ResultErrorType.BadRequest);
     }
+    
 }

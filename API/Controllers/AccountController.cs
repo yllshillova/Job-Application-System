@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Application.Services.AccountServices;
 using AutoMapper;
@@ -12,7 +13,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
-[AllowAnonymous]
 [ApiController]
 [Route("api/[controller]")]
 public class AccountController : BaseApiController
@@ -23,12 +23,15 @@ public class AccountController : BaseApiController
                 _service = service;
 
         }
+
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
                 return HandleResult(await _service.Login(loginDto));
         }
 
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto registerDto, string roleName)
         {
