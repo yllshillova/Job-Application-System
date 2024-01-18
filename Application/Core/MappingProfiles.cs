@@ -13,6 +13,12 @@ namespace Application.Core
         {
             CreateMap<Skill, SkillDto>().ReverseMap();
             CreateMap<User, UserDto>().ReverseMap();
+
+            CreateMap<RegisterDto, User>().ReverseMap();
+            CreateMap<RegisterDto, JobSeeker>().ReverseMap();
+            CreateMap<RegisterDto, Recruiter>().ReverseMap();
+            CreateMap<RegisterDto, Entrepreneur>().ReverseMap();
+
             CreateMap<Education, EducationDto>().ReverseMap();
             CreateMap<Experience, ExperienceDto>().ReverseMap();
             CreateMap<JobSeeker, JobSeekerDto>().ReverseMap();

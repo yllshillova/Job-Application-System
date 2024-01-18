@@ -18,14 +18,21 @@ namespace API.Controllers;
 public class AccountController : BaseApiController
 {
         private readonly IAccountService _service;
-    public AccountController(IAccountService service)
-    {
-            _service = service;
-        
-    }
-    [HttpPost]
-    public async Task<IActionResult> Login(LoginDto loginDto){
-       return HandleResult(await _service.Login(loginDto));
-    }
+        public AccountController(IAccountService service)
+        {
+                _service = service;
+
+        }
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginDto loginDto)
+        {
+                return HandleResult(await _service.Login(loginDto));
+        }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(RegisterDto registerDto, string roleName)
+        {
+                return HandleResult(await _service.Register(registerDto, roleName));
+        }
 
 }

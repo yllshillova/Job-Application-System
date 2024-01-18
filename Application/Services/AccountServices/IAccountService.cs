@@ -12,4 +12,5 @@ namespace Application.Services.AccountServices;
 public interface IAccountService
 {
     Task<Result<UserDto>> Login(LoginDto loginDto);
+    Task<Result<UserDto>> Register(RegisterDto registerDto,string roleName);
 }

@@ -9,8 +9,8 @@ namespace Application.Core
     {
         public bool IsSuccess { get; set; }
         public T Value { get; set; }
-        public ResultErrorType ErrorType { get; set; }   
-        public static Result<T> Success(T value) => new Result<T>{IsSuccess = true, Value = value};
-        public static Result<T> Failure(ResultErrorType errorType) => new Result<T> {IsSuccess = false, ErrorType = errorType};
+        public ResultErrorType ErrorType { get; set; }
+        public static Result<T> Success(T value) => new Result<T> { IsSuccess = true, Value = value };
+        public static Result<T> Failure(ResultErrorType errorType) => new Result<T> { IsSuccess = false, ErrorType = errorType };
     }
 }
