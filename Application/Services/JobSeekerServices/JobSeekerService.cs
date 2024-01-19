@@ -29,7 +29,14 @@ namespace Application.Services
                 .Include(e => e.Applications)
                 .FirstOrDefaultAsync(e => e.Id == id);
 
+            if (jobSeeker == null) return Result<JobSeekerDto>.Failure(ResultErrorType.NotFound, $"No jobSeeker with id {id} could be found!");
             var jobSeekerDto = _mapper.Map<JobSeekerDto>(jobSeeker);
+
+            if (jobSeekerDto == null)
+            {
+                return Result<JobSeekerDto>.Failure(ResultErrorType.BadRequest, "Problem while mapping from/to entity");
+            }
+
             return Result<JobSeekerDto>.Success(jobSeekerDto);
         }
 

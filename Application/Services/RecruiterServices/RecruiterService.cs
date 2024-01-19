@@ -31,8 +31,13 @@ namespace Application.Services.RecruiterServices
             .Include(r => r.JobPosts)
             .FirstOrDefaultAsync(r => r.Id == id);
             
+            if (recruiter == null) return Result<RecruiterDto>.Failure(ResultErrorType.NotFound, $"No recruiter with id {id} could be found!");
 
             var recruiterDto = _mapper.Map<RecruiterDto>(recruiter);
+            if (recruiterDto == null)
+            {
+                return Result<RecruiterDto>.Failure(ResultErrorType.BadRequest, "Problem while mapping from/to entity");
+            }
 
             return Result<RecruiterDto>.Success(recruiterDto);
         }

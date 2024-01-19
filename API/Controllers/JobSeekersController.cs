@@ -27,7 +27,7 @@ namespace API.Controllers
         public async Task<IActionResult> GetJobSeekerById(Guid id)
         {
 
-            return Ok(await _service._jobSeekerService.GetJobSeekerById(id));
+            return HandleResult(await _service._jobSeekerService.GetJobSeekerById(id));
         }
         
         [Authorize(Roles = "Admin")]
@@ -43,8 +43,8 @@ namespace API.Controllers
         public async Task<IActionResult> EditJobSeeker(Guid id, JobSeekerDto jobSeekerDto)
         {
             jobSeekerDto.Id = id;
-            await _service._jobSeekerService.Update(id, jobSeekerDto);
-            return Ok();
+            
+            return HandleResult(await _service._jobSeekerService.Update(id, jobSeekerDto));
         }
         
         [Authorize(Roles = "Admin")]

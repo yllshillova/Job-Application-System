@@ -26,7 +26,7 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetJobPostById(Guid id)
         {
-            return HandleResult(await _service.GetById(id));
+            return HandleResult(await _service.GetJobPostById(id));
         }
 
         [Authorize(Roles = "Admin,Entrepreneur,Recruiter")]

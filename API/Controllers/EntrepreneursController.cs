@@ -46,8 +46,8 @@ namespace API.Controllers
         public async Task<IActionResult> EditEntrepreneur(Guid id, EntrepreneurDto entrepreneurDto)
         {
             entrepreneurDto.Id = id;
-            await _service.Update(id, entrepreneurDto);
-            return Ok();
+            
+            return HandleResult(await _service.Update(id, entrepreneurDto));
         }
 
         [Authorize(Roles = "Admin,Entrepreneur")]

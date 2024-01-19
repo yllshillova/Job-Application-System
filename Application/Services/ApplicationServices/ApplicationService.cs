@@ -37,7 +37,7 @@ namespace Application.Services.ApplicationServices
 
             if (jobSeeker == null || jobPost == null)
             {
-                return Result<ApplicationDto>.Failure(ResultErrorType.NotFound);
+                return Result<ApplicationDto>.Failure(ResultErrorType.NotFound, "JobSeeker or JobPost is missing!");
             }
 
             if (resume == null)
@@ -49,7 +49,7 @@ namespace Application.Services.ApplicationServices
             var validationResult = ValidateFile(resume, allowedExtensions);
             if (!validationResult.IsSuccess)
             {
-                return Result<ApplicationDto>.Failure(validationResult.ErrorType);
+                return Result<ApplicationDto>.Failure(validationResult.ErrorType, "Validation of the resume is failed try again!");
             }
 
 
@@ -61,6 +61,11 @@ namespace Application.Services.ApplicationServices
 
             var resumeStorageEntity = _mapper.Map<ResumeStorage>(resumeStorageDto);
 
+            if (resumeStorageEntity == null)
+            {
+                return Result<ApplicationDto>.Failure(ResultErrorType.BadRequest, "Problem while mapping from/to entity");
+            }
+
             var applicationEntity = new ApplicationEntity
             {
                 Status = "Submitted",
@@ -71,11 +76,17 @@ namespace Application.Services.ApplicationServices
                 ResumeFile = resumeStorageEntity,
                 EmailNotificationId = emailNotificationId
             };
-            _context.Applications.Add(applicationEntity);
-            await _context.SaveChangesAsync();
 
-            // Map to DTO and return the result
+            _context.Applications.Add(applicationEntity);
+            var result = await _context.SaveChangesAsync() > 0;
+            if (!result) return Result<ApplicationDto>.Failure(ResultErrorType.BadRequest, "Something went wrong while adding the application!");
+
             var applicationDto = _mapper.Map<ApplicationDto>(applicationEntity);
+
+            if (applicationDto == null)
+            {
+                return Result<ApplicationDto>.Failure(ResultErrorType.BadRequest, "Problem while mapping from/to entity");
+            }
             return Result<ApplicationDto>.Success(applicationDto);
         }
 
@@ -83,17 +94,17 @@ namespace Application.Services.ApplicationServices
         {
             if (file == null || file.Length == 0)
             {
-                return Result<string>.Failure(ResultErrorType.NotFound);
+                return Result<string>.Failure(ResultErrorType.NotFound, "File is missing!");
             }
 
             var fileExtension = Path.GetExtension(file.FileName);
 
             if (!allowedExtensions.Contains(fileExtension.ToLower()))
             {
-                return Result<string>.Failure(ResultErrorType.BadRequest);
+                return Result<string>.Failure(ResultErrorType.BadRequest, $"This type of file {fileExtension} is not allowed!");
             }
 
-            return Result<string>.Success("File is valid");
+            return Result<string>.Success("File is valid!");
         }
 
         private async Task<byte[]> GetFileBytes(IFormFile file)

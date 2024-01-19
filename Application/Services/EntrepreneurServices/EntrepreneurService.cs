@@ -37,7 +37,9 @@ namespace Application.Services.EntrepreneurServices
                     .ThenInclude(c => c.Recruiters)
                     .ThenInclude(r => r.JobPosts)
                 .ToListAsync();
-                
+
+            if (entrepreneurs == null || entrepreneurs.Count == 0) return Result<List<EntrepreneurDto>>.Failure(ResultErrorType.NotFound, "No entrepreneurs couldn't be found!");
+
             var entrepreneurDtos = _mapper.Map<List<EntrepreneurDto>>(entrepreneurs);
             return Result<List<EntrepreneurDto>>.Success(entrepreneurDtos);
         }
@@ -50,7 +52,14 @@ namespace Application.Services.EntrepreneurServices
                 .Include(e => e.Companies)
                 .FirstOrDefaultAsync(e => e.Id == id);
 
+            if (entrepreneur == null) return Result<EntrepreneurDto>.Failure(ResultErrorType.NotFound, $"No entrepreneur with id {id} could be found!");
             var entrepreneurDto = _mapper.Map<EntrepreneurDto>(entrepreneur);
+
+            if (entrepreneurDto == null)
+            {
+                return Result<EntrepreneurDto>.Failure(ResultErrorType.BadRequest, "Problem while mapping from/to entity");
+            }
+
             return Result<EntrepreneurDto>.Success(entrepreneurDto);
         }
 

@@ -36,6 +36,8 @@ namespace Application.Services.CompanyServices
                 .ThenInclude(r => r.JobPosts)
             .Include(c => c.EmailNotifications)
             .ToListAsync();
+
+            if (companies == null || companies.Count == 0) return Result<List<CompanyDto>>.Failure(ResultErrorType.NotFound, "No companies couldn't be found!");
             var companydtos = _mapper.Map<List<CompanyDto>>(companies);
 
             return Result<List<CompanyDto>>.Success(companydtos);
@@ -48,8 +50,13 @@ namespace Application.Services.CompanyServices
             .Include(c => c.EmailNotifications)
             .FirstOrDefaultAsync(c => c.Id == id);
 
+            if (company == null) return Result<CompanyDto>.Failure(ResultErrorType.NotFound, $"No company with id {id} could be found!");
             var companydto = _mapper.Map<CompanyDto>(company);
 
+            if (companydto == null)
+            {
+                return Result<CompanyDto>.Failure(ResultErrorType.BadRequest, "Problem while mapping from/to entity");
+            }
             return Result<CompanyDto>.Success(companydto);
 
         }

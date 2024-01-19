@@ -36,23 +36,24 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddRecruiter(RecruiterDto recruiterDto)
         {
-            
+
             return HandleResult(await _service.Add(recruiterDto));
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPut]
-        public async Task<IActionResult> EditRecruiter(Guid id, RecruiterDto updatedRecruiterDto){
+        public async Task<IActionResult> EditRecruiter(Guid id, RecruiterDto updatedRecruiterDto)
+        {
             updatedRecruiterDto.Id = id;
-            await _service.Update(id, updatedRecruiterDto);
-            return Ok();
+
+            return HandleResult(await _service.Update(id, updatedRecruiterDto));
         }
 
         [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRecruiter(Guid id)
         {
-            
+
             return HandleResult(await _service.Delete(id));
         }
 

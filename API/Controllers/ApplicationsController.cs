@@ -23,7 +23,7 @@ namespace API.Controllers
         public async Task<IActionResult> GetApplicationById(Guid id)
         {
 
-            return Ok(await _service._applicationService.GetById(id));
+            return HandleResult(await _service._applicationService.GetById(id));
         }
 
         [Authorize(Roles = "Admin,Recruiter,Entrepreneur")]

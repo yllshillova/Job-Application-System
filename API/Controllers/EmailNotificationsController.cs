@@ -30,7 +30,7 @@ namespace API.Controllers
         public async Task<IActionResult> GetEmailnotificationById(Guid id)
         {
 
-            return Ok(await _service.GetById(id));
+            return HandleResult(await _service.GetById(id));
         }
 
         [Authorize(Roles = "Admin,Entrepreneur")]
@@ -46,8 +46,8 @@ namespace API.Controllers
         public async Task<IActionResult> EditEmailNotification(Guid id, EmailNotificationDto emailNotificationDto)
         {
             emailNotificationDto.Id = id;
-            await _service.Update(id, emailNotificationDto);
-            return Ok();
+            
+            return HandleResult(await _service.Update(id, emailNotificationDto));
         }
         
         [Authorize(Roles = "Admin")]

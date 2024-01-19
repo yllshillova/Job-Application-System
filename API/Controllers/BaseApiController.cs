@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Application.Core;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,15 +19,29 @@ namespace API.Controllers
             switch (result.ErrorType)
             {
                 case ResultErrorType.Unauthorized:
+                if (!string.IsNullOrEmpty(result.ErrorMessage))
+                    {
+                        return Unauthorized(result.ErrorMessage);
+                    }
                     return Unauthorized();
 
                 case ResultErrorType.NotFound:
-                    if (result.IsSuccess && result.Value == null)
+                    if (!string.IsNullOrEmpty(result.ErrorMessage))
+                    {
+                        return NotFound(result.ErrorMessage);
+                    }
+                    else if (!result.IsSuccess && result.Value == null)
+                    {
                         return NotFound();
+                    }
                     break;
 
                 case ResultErrorType.BadRequest:
-                    if (!result.IsSuccess)
+                    if (!string.IsNullOrEmpty(result.ErrorMessage))
+                    {
+                        return BadRequest(result.ErrorMessage);
+                    }
+                    else if (!result.IsSuccess)
                         return BadRequest(result.ErrorType.ToString());
                     break;
 

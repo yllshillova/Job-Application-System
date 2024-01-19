@@ -37,8 +37,7 @@ namespace API.Controllers
         public async Task<IActionResult> UpdateCompany(Guid id, CompanyDto company)
         {
             company.Id = id;
-            await _service.Update(id, company);
-            return Ok();
+            return HandleResult( await _service.Update(id, company));
         }
         [Authorize(Roles = "Admin,Entrepreneur")]
         [HttpDelete("{id}")]

@@ -23,7 +23,14 @@ namespace Application.Services.JobPostServices
             var jobPost = await _context.JobPosts
             .Include(j => j.Applications).FirstOrDefaultAsync(x => x.Id == id);
 
+            if (jobPost == null) return Result<JobPostDto>.Failure(ResultErrorType.NotFound, $"No jobPost with id {id} could be found!");
+
             var jobPostDto = _mapper.Map<JobPostDto>(jobPost);
+
+            if (jobPostDto == null)
+            {
+                return Result<JobPostDto>.Failure(ResultErrorType.BadRequest, "Problem while mapping from/to entity");
+            }
 
             return Result<JobPostDto>.Success(jobPostDto);
 
