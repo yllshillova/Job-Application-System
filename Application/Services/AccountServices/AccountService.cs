@@ -55,23 +55,26 @@ public class AccountService : IAccountService
             "JobSeeker" => _mapper.Map<JobSeeker>(registerDto),
             "Entrepreneur" => _mapper.Map<Entrepreneur>(registerDto),
             "Recruiter" => _mapper.Map<Recruiter>(registerDto),
+            "Admin" => _mapper.Map<AppUser>(registerDto),
             _ => _mapper.Map<AppUser>(registerDto)
         };
 
         var result = await _userManager.CreateAsync(newUser, registerDto.Password);
         if (result.Succeeded)
         {
+            await _userManager.AddToRoleAsync(newUser, roleName);
             UserDto userDto = newUser switch
             {
                 JobSeeker jobSeeker => _mapper.Map<JobSeekerDto>(jobSeeker),
                 Entrepreneur entrepreneur => _mapper.Map<EntrepreneurDto>(entrepreneur),
                 Recruiter recruiter => _mapper.Map<RecruiterDto>(recruiter),
+                AppUser user => _mapper.Map<UserDto>(user),
                 _ => null
             };
 
             if (userDto != null)
             {
-                userDto.Token =await  _tokenService.CreateToken(newUser);
+                userDto.Token = await _tokenService.CreateToken(newUser);
                 return Result<UserDto>.Success(userDto);
             }
 

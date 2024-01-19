@@ -14,11 +14,12 @@ namespace API.Controllers
         protected ActionResult HandleResult<T>(Result<T> result)
         {
             if (result == null) return null;
-            // If none of the specific cases match, return Ok with the value if successful
+
             if (result.IsSuccess && result.Value != null)
             {
                 return Ok(result.Value);
             }
+
             switch (result.ErrorType)
             {
                 case ResultErrorType.Unauthorized:
@@ -26,28 +27,19 @@ namespace API.Controllers
 
                 case ResultErrorType.NotFound:
                     if (result.IsSuccess && result.Value == null)
-                    {
                         return NotFound();
-                    }
                     break;
 
                 case ResultErrorType.BadRequest:
                     if (!result.IsSuccess)
-                    {
                         return BadRequest(result.ErrorType.ToString());
-                    }
                     break;
 
-                // Add more cases for other error types as needed
-
                 default:
-                    // Handle other cases if necessary
                     break;
             }
 
 
-
-            // Default to BadRequest if no specific case matches
             return BadRequest(result.ErrorType.ToString());
         }
 

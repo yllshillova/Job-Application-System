@@ -19,18 +19,21 @@ namespace API.Controllers
             _service = service;
         }
 
+        [Authorize(Roles = "Admin,Entrepreneur")]
         [HttpGet]
         public async Task<IActionResult> GetAllEntrepreneurs()
         {
             return HandleResult(await _service.GetAllEntrepreneurs());
         }
 
+        [Authorize(Roles = "Admin,Entrepreneur")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEntrepreneurById(Guid id)
         {
             return HandleResult(await _service.GetEntrepreneurById(id));
         }
-
+        
+        [Authorize(Roles = "Admin,Entrepreneur")]
         [HttpPost]
         public async Task<IActionResult> AddEntrepreneur(EntrepreneurDto entrepreneurDto)
         {
@@ -38,6 +41,7 @@ namespace API.Controllers
             return HandleResult(await _service.Add(entrepreneurDto));
         }
 
+        [Authorize(Roles = "Admin,Entrepreneur")]
         [HttpPut]
         public async Task<IActionResult> EditEntrepreneur(Guid id, EntrepreneurDto entrepreneurDto)
         {
@@ -46,6 +50,7 @@ namespace API.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "Admin,Entrepreneur")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEntrepreneur(Guid id)
         {

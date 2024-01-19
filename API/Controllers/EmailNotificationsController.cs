@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Application.Services;
 using Application.Services.EmailNotificationServices;
 using Domain.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -17,21 +18,22 @@ namespace API.Controllers
             _service = service;
         }
 
+        [Authorize(Roles = "Admin,Entrepreneur")]
         [HttpGet]
         public async Task<IActionResult> GetAllEmailnotifications()
         {
             return HandleResult(await _service.GetAll());
         }
 
-
+        [Authorize(Roles = "Admin,Entrepreneur")]
         [HttpGet("{id}")]
-
         public async Task<IActionResult> GetEmailnotificationById(Guid id)
         {
 
             return Ok(await _service.GetById(id));
         }
 
+        [Authorize(Roles = "Admin,Entrepreneur")]
         [HttpPost]
         public async Task<IActionResult> CreateEmailNotification(EmailNotificationDto emailNotificationDto)
         {
@@ -39,6 +41,7 @@ namespace API.Controllers
             return HandleResult(await _service.Add(emailNotificationDto));
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public async Task<IActionResult> EditEmailNotification(Guid id, EmailNotificationDto emailNotificationDto)
         {
@@ -46,6 +49,8 @@ namespace API.Controllers
             await _service.Update(id, emailNotificationDto);
             return Ok();
         }
+        
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEmailNotification(Guid id)
         {

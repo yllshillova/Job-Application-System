@@ -15,21 +15,22 @@ namespace API.Controllers
             _service = service;
 
         }
-        [Authorize(Roles = "JobSeeker")]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAllJobSeekers()
         {
             return HandleResult(await _service._jobSeekerService.GetAll(u => u.Educations, u => u.Experiences, u => u.Skills));
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
-
         public async Task<IActionResult> GetJobSeekerById(Guid id)
         {
 
             return Ok(await _service._jobSeekerService.GetJobSeekerById(id));
         }
-
+        
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateJobSeeker(JobSeekerDto jobSeekerDto)
         {
@@ -37,6 +38,7 @@ namespace API.Controllers
             return HandleResult(await _service._jobSeekerService.Add(jobSeekerDto));
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public async Task<IActionResult> EditJobSeeker(Guid id, JobSeekerDto jobSeekerDto)
         {
@@ -44,6 +46,8 @@ namespace API.Controllers
             await _service._jobSeekerService.Update(id, jobSeekerDto);
             return Ok();
         }
+        
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteJobSeeker(Guid id)
         {
@@ -51,6 +55,7 @@ namespace API.Controllers
             return HandleResult(await _service._jobSeekerService.Delete(id));
         }
 
+        [Authorize(Roles = "JobSeeker,Recruiter")]
         [HttpPost("submitApplication")]
         public async Task<IActionResult> SubmitApplication(Guid jobSeekerId, Guid jobPostId, IFormFile resume, Guid emailNotificationId)
         {

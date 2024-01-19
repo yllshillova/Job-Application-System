@@ -27,7 +27,7 @@ namespace Persistence
             {
                 await roleManager.CreateAsync(new IdentityRole<Guid>("Entrepreneur"));
             }
-              if (!await roleManager.RoleExistsAsync("Admin"))
+            if (!await roleManager.RoleExistsAsync("Admin"))
             {
                 await roleManager.CreateAsync(new IdentityRole<Guid>("Admin"));
             }
@@ -35,6 +35,16 @@ namespace Persistence
 
             if (!userManager.Users.Any())
             {
+                var admins = new List<AppUser>
+            {
+                new AppUser{UserName = "admin1", UserLastName = "admin1", Email = "admin1@test.com"},
+                new AppUser{UserName = "admin2", UserLastName = "admin1", Email = "admin2@test.com"},
+            };
+                foreach (var admin in admins)
+                {
+                    await userManager.CreateAsync(admin, "Pa$$w0rd");
+                    await userManager.AddToRoleAsync(admin, "Admin");
+                }
                 var jobSeekers = new List<JobSeeker>
             {
                 new JobSeeker{UserName = "JobSeeker1", UserLastName = "seeker", Email = "seeker1@test.com"},
