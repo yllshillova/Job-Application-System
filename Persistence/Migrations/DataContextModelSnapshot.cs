@@ -115,9 +115,6 @@ namespace Persistence.Migrations
                     b.Property<DateTime>("DateSubmitted")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("EmailNotificationId")
-                        .HasColumnType("TEXT");
-
                     b.Property<Guid>("JobPostId")
                         .HasColumnType("TEXT");
 
@@ -131,8 +128,6 @@ namespace Persistence.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EmailNotificationId");
 
                     b.HasIndex("JobPostId");
 
@@ -197,34 +192,6 @@ namespace Persistence.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Educations");
-                });
-
-            modelBuilder.Entity("Domain.EmailNotification", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Body")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("CompanyId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("EmailAddress")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SentAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Subject")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
-
-                    b.ToTable("EmailNotifications");
                 });
 
             modelBuilder.Entity("Domain.Experience", b =>
@@ -303,7 +270,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ResumeStorage");
+                    b.ToTable("ResumeStorages");
                 });
 
             modelBuilder.Entity("Domain.Skill", b =>
@@ -482,12 +449,6 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.ApplicationEntity", b =>
                 {
-                    b.HasOne("Domain.EmailNotification", "EmailNotification")
-                        .WithMany()
-                        .HasForeignKey("EmailNotificationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.JobPost", "JobPost")
                         .WithMany("Applications")
                         .HasForeignKey("JobPostId")
@@ -505,8 +466,6 @@ namespace Persistence.Migrations
                         .HasForeignKey("ResumeFileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("EmailNotification");
 
                     b.Navigation("JobPost");
 
@@ -535,17 +494,6 @@ namespace Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.EmailNotification", b =>
-                {
-                    b.HasOne("Domain.Company", "Company")
-                        .WithMany("EmailNotifications")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("Domain.Experience", b =>
@@ -654,8 +602,6 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Company", b =>
                 {
-                    b.Navigation("EmailNotifications");
-
                     b.Navigation("Recruiters");
                 });
 

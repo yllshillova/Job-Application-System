@@ -26,7 +26,7 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ResumeStorage",
+                name: "ResumeStorages",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
@@ -35,7 +35,7 @@ namespace Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ResumeStorage", x => x.Id);
+                    table.PrimaryKey("PK_ResumeStorages", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -68,16 +68,15 @@ namespace Persistence.Migrations
                     DateSubmitted = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ResumeFileId = table.Column<Guid>(type: "TEXT", nullable: false),
                     JobPostId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    JobSeekerId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    EmailNotificationId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    JobSeekerId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Applications", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Applications_ResumeStorage_ResumeFileId",
+                        name: "FK_Applications_ResumeStorages_ResumeFileId",
                         column: x => x.ResumeFileId,
-                        principalTable: "ResumeStorage",
+                        principalTable: "ResumeStorages",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -285,33 +284,6 @@ namespace Persistence.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "EmailNotifications",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    EmailAddress = table.Column<string>(type: "TEXT", nullable: true),
-                    Subject = table.Column<string>(type: "TEXT", nullable: true),
-                    Body = table.Column<string>(type: "TEXT", nullable: true),
-                    SentAt = table.Column<string>(type: "TEXT", nullable: true),
-                    CompanyId = table.Column<Guid>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EmailNotifications", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_EmailNotifications_Companies_CompanyId",
-                        column: x => x.CompanyId,
-                        principalTable: "Companies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Applications_EmailNotificationId",
-                table: "Applications",
-                column: "EmailNotificationId");
-
             migrationBuilder.CreateIndex(
                 name: "IX_Applications_JobPostId",
                 table: "Applications",
@@ -380,11 +352,6 @@ namespace Persistence.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmailNotifications_CompanyId",
-                table: "EmailNotifications",
-                column: "CompanyId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Experiences_UserId",
                 table: "Experiences",
                 column: "UserId");
@@ -404,14 +371,6 @@ namespace Persistence.Migrations
                 table: "Applications",
                 column: "JobSeekerId",
                 principalTable: "AspNetUsers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Applications_EmailNotifications_EmailNotificationId",
-                table: "Applications",
-                column: "EmailNotificationId",
-                principalTable: "EmailNotifications",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
@@ -499,13 +458,10 @@ namespace Persistence.Migrations
                 name: "Skills");
 
             migrationBuilder.DropTable(
-                name: "EmailNotifications");
-
-            migrationBuilder.DropTable(
                 name: "JobPosts");
 
             migrationBuilder.DropTable(
-                name: "ResumeStorage");
+                name: "ResumeStorages");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

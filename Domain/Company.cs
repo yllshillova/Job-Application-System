@@ -16,7 +16,7 @@ namespace Domain
         [ForeignKey("EntrepreneurId")]
         public Entrepreneur Entrepreneur { get; set; }
         public List<Recruiter> Recruiters { get; set; }
-        public List<EmailNotification> EmailNotifications {get; set;}
+        //public List<EmailNotification> EmailNotifications {get; set;}
 
     }
 }

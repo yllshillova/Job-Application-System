@@ -17,9 +17,9 @@ namespace Domain
         public Guid JobSeekerId { get; set; }
         [ForeignKey("JobSeekerId")]
         public JobSeeker JobSeeker { get; set; }
-        public Guid EmailNotificationId { get; set; }
-        [ForeignKey("EmailNotificationId")]
-        public EmailNotification EmailNotification { get; set; }
+        // public Guid EmailNotificationId { get; set; }
+        // [ForeignKey("EmailNotificationId")]
+        // public EmailNotification EmailNotification { get; set; }
 
 
     }

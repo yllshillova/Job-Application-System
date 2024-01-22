@@ -14,13 +14,11 @@ namespace Persistence
         public DbSet<Skill> Skills { get; set; }
         public DbSet<Education> Educations { get; set; }
         public DbSet<Experience> Experiences { get; set; }
-        // public DbSet<Entrepreneur> Entrepreneurs { get; set; }
-        // public DbSet<JobSeeker> JobSeekers { get; set; }
-        // public DbSet<Recruiter> Recruiters { get; set; }
         public DbSet<JobPost> JobPosts { get; set; }
         public DbSet<ApplicationEntity> Applications { get; set; }
-        public DbSet<EmailNotification> EmailNotifications { get; set; }
+        // public DbSet<EmailNotification> EmailNotifications { get; set; }
         public DbSet<Company> Companies { get; set; }
+        public DbSet<ResumeStorage> ResumeStorages { get; set;}
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

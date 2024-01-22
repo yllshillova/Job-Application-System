@@ -22,7 +22,7 @@ namespace Domain.DTOs
         public Guid JobPostId { get; set; }
         [Required]
         public Guid JobSeekerId { get; set; }
-        [Required]
-        public Guid EmailNotificationId { get; set; }
+        // [Required]
+        // public Guid EmailNotificationId { get; set; }
     }
 }

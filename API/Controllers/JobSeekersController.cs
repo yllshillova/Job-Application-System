@@ -19,7 +19,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllJobSeekers()
         {
-            return HandleResult(await _service._jobSeekerService.GetAll(u => u.Educations, u => u.Experiences, u => u.Skills));
+            return HandleResult(await _service._jobSeekerService.GetAll(u => u.Educations, u => u.Experiences, u => u.Skills, u => u.Applications));
         }
 
         [Authorize(Roles = "Admin")]
@@ -29,7 +29,7 @@ namespace API.Controllers
 
             return HandleResult(await _service._jobSeekerService.GetJobSeekerById(id));
         }
-        
+
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateJobSeeker(JobSeekerDto jobSeekerDto)
@@ -43,10 +43,10 @@ namespace API.Controllers
         public async Task<IActionResult> EditJobSeeker(Guid id, JobSeekerDto jobSeekerDto)
         {
             jobSeekerDto.Id = id;
-            
+
             return HandleResult(await _service._jobSeekerService.Update(id, jobSeekerDto));
         }
-        
+
         [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteJobSeeker(Guid id)

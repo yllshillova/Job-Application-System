@@ -20,7 +20,7 @@ namespace Domain.DTOs
         [Required]
         public Guid EntrepreneurId { get; set; }
         public List<RecruiterDto> Recruiters { get; set; }
-        public List<EmailNotificationDto> EmailNotifications { get; set; }
+        //public List<EmailNotificationDto> EmailNotifications { get; set; }
 
     }
 }

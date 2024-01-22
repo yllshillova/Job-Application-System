@@ -73,8 +73,7 @@ namespace Application.Services.ApplicationServices
                 JobSeekerId = jobSeekerId,
                 JobPostId = jobPostId,
                 ResumeFileId = resumeStorageEntity.Id,
-                ResumeFile = resumeStorageEntity,
-                EmailNotificationId = emailNotificationId
+                ResumeFile = resumeStorageEntity
             };
 
             _context.Applications.Add(applicationEntity);

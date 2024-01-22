@@ -15,6 +15,6 @@ namespace Domain
         [ForeignKey("RecruiterId")]
         public Recruiter Recruiter { get; set; }
         public List<ApplicationEntity> Applications { get; set; }
-
+        
     }
 }

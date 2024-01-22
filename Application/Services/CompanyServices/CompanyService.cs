@@ -34,10 +34,9 @@ namespace Application.Services.CompanyServices
                 .ThenInclude(r => r.Experiences)
             .Include(c => c.Recruiters)
                 .ThenInclude(r => r.JobPosts)
-            .Include(c => c.EmailNotifications)
             .ToListAsync();
 
-            if (companies == null || companies.Count == 0) return Result<List<CompanyDto>>.Failure(ResultErrorType.NotFound, "No companies couldn't be found!");
+            if (companies == null || companies.Count == 0) return Result<List<CompanyDto>>.Failure(ResultErrorType.NotFound, "No companies could be found!");
             var companydtos = _mapper.Map<List<CompanyDto>>(companies);
 
             return Result<List<CompanyDto>>.Success(companydtos);
@@ -47,7 +46,13 @@ namespace Application.Services.CompanyServices
         {
             var company = await _context.Companies
             .Include(c => c.Recruiters)
-            .Include(c => c.EmailNotifications)
+                .ThenInclude(r => r.Educations)
+            .Include(c => c.Recruiters)
+                .ThenInclude(r => r.Skills)
+            .Include(c => c.Recruiters)
+                .ThenInclude(r => r.Experiences)
+            .Include(c => c.Recruiters)
+                .ThenInclude(r => r.JobPosts)
             .FirstOrDefaultAsync(c => c.Id == id);
 
             if (company == null) return Result<CompanyDto>.Failure(ResultErrorType.NotFound, $"No company with id {id} could be found!");
