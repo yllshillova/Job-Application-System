@@ -35,7 +35,7 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCompany(CompanyDto company)
         {
-           return HandleResult(await _service.AddCompany(company));
+           return HandleResult(await _service.Add(company));
         }
 
 

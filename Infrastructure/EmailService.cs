@@ -70,6 +70,44 @@ public class EmailService : IEmailService
             return "Failed to send email";
         }
     }
+    public async Task<string> SendApplicationResponseSMTPMailTrapAsync(string applicantEmail, string companyEmail)
+    {
+        string companyName = await GetCompanyName(companyEmail);
+        string companyEmailAddress = await GetCompanyByEmail(companyEmail);
+        string smtpServer = "sandbox.smtp.mailtrap.io";
+        string smtpUsername = _config["Mailtrap:Username"];
+        string smtpPassword = _config["Mailtrap:Password"];
+        int smtpPort = 587;
+        string senderEmail = companyEmailAddress;
+        try
+        {
+            // await AddSenderToMailjet(companyEmailAddress, companyName);
+            using (SmtpClient smtpClient = new SmtpClient(smtpServer, smtpPort))
+            {
+                smtpClient.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
+                smtpClient.EnableSsl = true;
+
+                using (MailMessage mailMessage = new MailMessage())
+                {
+                    mailMessage.From = new MailAddress(companyEmailAddress, companyName);
+                    mailMessage.To.Add(new MailAddress(applicantEmail));
+                    mailMessage.Subject = "Application Received";
+                    mailMessage.Body = "Thank you for applying. We have received your application and will get back to you as soon as possible.";
+                    mailMessage.IsBodyHtml = true;
+
+                    mailMessage.Bcc.Add(senderEmail);
+
+                    await smtpClient.SendMailAsync(mailMessage);
+                    return "Email Sent successfully";
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error sending email: {ex.Message}");
+            return "Failed to send email";
+        }
+    }
     public async Task AddSenderToMailjet(string email, string name)
     {
         try
@@ -144,7 +182,7 @@ public class EmailService : IEmailService
             return false;
         }
     }
-    
+
 
     private async Task<string> GetCompanyByEmail(string email)
     {
@@ -178,5 +216,5 @@ public class EmailService : IEmailService
         return company.Name;
 
     }
-    
+
 }

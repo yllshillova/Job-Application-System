@@ -101,7 +101,7 @@ namespace Application.Services.ApplicationServices
             {
                 return Result<ApplicationDto>.Failure(ResultErrorType.BadRequest, "Problem while mapping from/to entity");
             }
-            var sendapp = await _emailService.SendApplicationResponseSMTPAsync(jobSeeker.Email, jobPost.Recruiter.Company.Email);
+            var sendapp = await _emailService.SendApplicationResponseSMTPMailTrapAsync(jobSeeker.Email, jobPost.Recruiter.Company.Email);
             if (string.IsNullOrEmpty(sendapp))
             {
                 // Log or handle the situation where the email service fails to send the email
