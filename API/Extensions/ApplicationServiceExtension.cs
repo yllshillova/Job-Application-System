@@ -6,7 +6,6 @@ using Application.Services;
 using Application.Services.AccountServices;
 using Application.Services.ApplicationServices;
 using Application.Services.CompanyServices;
-using Application.Services.EmailNotificationServices;
 using Application.Services.EntrepreneurServices;
 using Application.Services.JobPostServices;
 using Application.Services.JobSeekerServices;
@@ -67,7 +66,6 @@ namespace API.Extensions
             services.AddScoped<IJobPostService, JobPostService>();
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<IApplicationService, ApplicationService>();
-            services.AddScoped<IEmailNotificationService, EmailNotificationService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<MainService>();
