@@ -8,6 +8,6 @@ namespace Application.Services.ApplicationServices
 {
     public interface IApplicationService :IEntityBaseRepository<ApplicationEntity,ApplicationDto>
     {
-        Task<Result<ApplicationDto>> SubmitApplication(Guid jobSeekerId, Guid jobPostId, IFormFile resume, Guid emailNotificationId);
+        Task<Result<ApplicationDto>> SubmitApplication(Guid jobSeekerId, Guid jobPostId, IFormFile resume);
     }
 }

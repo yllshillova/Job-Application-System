@@ -1,6 +1,7 @@
 using System.Text;
 using System.Text.Json.Serialization;
 using Application.Core;
+using Application.Interfaces;
 using Application.Services;
 using Application.Services.AccountServices;
 using Application.Services.ApplicationServices;
@@ -13,6 +14,7 @@ using Application.Services.RecruiterServices;
 using Domain;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -67,6 +69,7 @@ namespace API.Extensions
             services.AddScoped<IApplicationService, ApplicationService>();
             services.AddScoped<IEmailNotificationService, EmailNotificationService>();
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<MainService>();
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
             services.AddIdentityCore<AppUser>(opt =>

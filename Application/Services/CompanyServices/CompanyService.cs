@@ -5,9 +5,11 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Application.Base;
 using Application.Core;
+using Application.Interfaces;
 using AutoMapper;
 using Domain;
 using Domain.DTOs;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -17,10 +19,13 @@ namespace Application.Services.CompanyServices
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
-        public CompanyService(DataContext context, IMapper mapper) : base(context, mapper)
+        private readonly IEmailService _emailService;
+
+        public CompanyService(DataContext context, IMapper mapper, IEmailService emailService) : base(context, mapper)
         {
             _mapper = mapper;
             _context = context;
+            _emailService = emailService;
         }
 
         public async Task<Result<List<CompanyDto>>> GetAllCompanies()
@@ -65,5 +70,60 @@ namespace Application.Services.CompanyServices
             return Result<CompanyDto>.Success(companydto);
 
         }
+
+        public async Task<Result<Unit>> AddCompany(CompanyDto companyDto)
+        {
+            var addCompanyResult = await Add(companyDto);
+
+            if (addCompanyResult.IsSuccess)
+            {
+                string companyEmail = companyDto.Email;
+                string companyName = companyDto.Name;
+
+                await AddSenderToMailjet(companyEmail, companyName);
+                return Result<Unit>.Success(Unit.Value);
+            }
+            return Result<Unit>.Failure(ResultErrorType.BadRequest, "Failed to add the sender to the mailjet");
+
+        }
+
+
+        private async Task AddSenderToMailjet(string email, string name)
+        {
+            await _emailService.AddSenderToMailjet(email, name);
+        }
+
+
+
+
+        // public async Task<Result<Unit>> AddCompanyAndContact(CompanyDto companyDto, string mailjetApiKey, string mailjetApiSecret)
+        // {
+        //     var addCompanyResult = await Add(companyDto);
+
+        //     if (addCompanyResult.IsSuccess)
+        //     {
+        //         string companyEmail = companyDto.Email;
+
+        //         // Use the injected MailjetService to add the company's email to Mailjet contact list
+        //         var addContactResult = await _emailService.AddContactToList(mailjetApiKey, mailjetApiSecret, companyEmail);
+
+        //         if (addContactResult.IsSuccess)
+        //         {
+        //             return Result<Unit>.Success(Unit.Value);
+        //         }
+        //         else
+        //         {
+        //             // Handle the case where adding to Mailjet failed
+        //             return Result<Unit>.Failure(addContactResult.ErrorType, addContactResult.ErrorMessage);
+        //         }
+        //     }
+        //     else
+        //     {
+        //         // Handle the case where adding the company to the database failed
+        //         return Result<Unit>.Failure(addCompanyResult.ErrorType, addCompanyResult.ErrorMessage);
+        //     }
+        // }
+
+
     }
 }

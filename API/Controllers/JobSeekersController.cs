@@ -57,9 +57,9 @@ namespace API.Controllers
 
         [Authorize(Roles = "JobSeeker,Recruiter")]
         [HttpPost("submitApplication")]
-        public async Task<IActionResult> SubmitApplication(Guid jobSeekerId, Guid jobPostId, IFormFile resume, Guid emailNotificationId)
+        public async Task<IActionResult> SubmitApplication(Guid jobSeekerId, Guid jobPostId, IFormFile resume)
         {
-            return HandleResult(await _service._applicationService.SubmitApplication(jobSeekerId, jobPostId, resume, emailNotificationId));
+            return HandleResult(await _service._applicationService.SubmitApplication(jobSeekerId, jobPostId, resume));
         }
 
     }

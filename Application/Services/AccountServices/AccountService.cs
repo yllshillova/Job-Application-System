@@ -48,7 +48,7 @@ public class AccountService : IAccountService
     {
         if (await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email || x.UserName == registerDto.UserName))
         {
-            return Result<UserDto>.Failure(ResultErrorType.BadRequest);
+            return Result<UserDto>.Failure(ResultErrorType.BadRequest,"Email/username is taken try another one!");
         }
 
         AppUser newUser = roleName switch

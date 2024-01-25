@@ -6,6 +6,7 @@ using Application.Base;
 using Application.Core;
 using Domain;
 using Domain.DTOs;
+using MediatR;
 
 namespace Application.Services.CompanyServices
 {
@@ -14,5 +15,6 @@ namespace Application.Services.CompanyServices
 
     Task<Result<List<CompanyDto>>> GetAllCompanies();
     Task<Result<CompanyDto>> GetCompanyById(Guid id);
+    Task<Result<Unit>> AddCompany(CompanyDto companyDto);
   }
 }
