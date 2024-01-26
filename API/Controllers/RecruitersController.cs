@@ -37,7 +37,7 @@ namespace API.Controllers
         public async Task<IActionResult> AddRecruiter(RecruiterDto recruiterDto)
         {
 
-            return HandleResult(await _service.Add(recruiterDto));
+            return HandleResult(await _service.AddRecruiter(recruiterDto));
         }
 
         [Authorize(Roles = "Admin")]

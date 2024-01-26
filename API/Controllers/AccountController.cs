@@ -29,7 +29,8 @@ public class AccountController : BaseApiController
         {
                 return HandleResult(await _service.Register(registerDto, roleName));
         }
-        [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         [HttpGet("current-user")]
         public async Task<ActionResult<UserDto>> GetCurrentUser()
         {

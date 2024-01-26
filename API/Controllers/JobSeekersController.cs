@@ -35,7 +35,7 @@ namespace API.Controllers
         public async Task<IActionResult> CreateJobSeeker(JobSeekerDto jobSeekerDto)
         {
 
-            return HandleResult(await _service._jobSeekerService.Add(jobSeekerDto));
+            return HandleResult(await _service._jobSeekerService.AddJobSeeker(jobSeekerDto));
         }
 
         [Authorize(Roles = "Admin")]

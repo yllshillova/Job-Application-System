@@ -38,7 +38,7 @@ namespace API.Controllers
         public async Task<IActionResult> AddEntrepreneur(EntrepreneurDto entrepreneurDto)
         {
             
-            return HandleResult(await _service.Add(entrepreneurDto));
+            return HandleResult(await _service.AddEntrepreneur(entrepreneurDto));
         }
 
         [Authorize(Roles = "Admin,Entrepreneur")]

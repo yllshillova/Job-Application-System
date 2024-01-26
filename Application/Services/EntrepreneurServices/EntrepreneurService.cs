@@ -1,8 +1,11 @@
 using Application.Base;
 using Application.Core;
+using Application.Services.AccountServices;
 using AutoMapper;
 using Domain;
 using Domain.DTOs.UserDTOs;
+using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -12,8 +15,12 @@ namespace Application.Services.EntrepreneurServices
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
-        public EntrepreneurService(DataContext context, IMapper mapper) : base(context, mapper)
+        private readonly UserManager<AppUser> _userManager;
+        private readonly TokenService _tokenService;
+        public EntrepreneurService(DataContext context, IMapper mapper, UserManager<AppUser> userManager, TokenService tokenService) : base(context, mapper)
         {
+            _tokenService = tokenService;
+            _userManager = userManager;
             _mapper = mapper;
             _context = context;
         }
@@ -62,6 +69,35 @@ namespace Application.Services.EntrepreneurServices
 
             return Result<EntrepreneurDto>.Success(entrepreneurDto);
         }
+
+        public async Task<Result<Unit>> AddEntrepreneur(EntrepreneurDto entrepreneurDto)
+        {
+            var entrepreneur = _mapper.Map<Entrepreneur>(entrepreneurDto);
+            if (entrepreneur == null)
+            {
+                return Result<Unit>.Failure(ResultErrorType.BadRequest, $"Problem while mapping from/to {typeof(EntrepreneurDto).Name}");
+            }
+
+
+            var result = await _userManager.CreateAsync(entrepreneur, entrepreneurDto.PasswordHash);
+
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(entrepreneur, "Entrepreneur");
+
+                // You can map the user to the appropriate DTO based on the role
+                EntrepreneurDto mappedEntrepreneurDto = _mapper.Map<EntrepreneurDto>(entrepreneur);
+
+                if (mappedEntrepreneurDto != null)
+                {
+                    mappedEntrepreneurDto.Token = await _tokenService.CreateToken(entrepreneur);
+                    return Result<Unit>.Success(Unit.Value);
+                }
+            }
+
+            return Result<Unit>.Failure(ResultErrorType.BadRequest, "Failed to register the user!");
+        }
+
 
     }
 }
