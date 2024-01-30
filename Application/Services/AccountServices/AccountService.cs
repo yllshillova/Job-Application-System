@@ -10,6 +10,7 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Persistence;
 
 namespace Application.Services.AccountServices;
 
@@ -18,8 +19,10 @@ public class AccountService : IAccountService
     private readonly UserManager<AppUser> _userManager;
     private readonly IMapper _mapper;
     private readonly TokenService _tokenService;
-    public AccountService(UserManager<AppUser> userManager, IMapper mapper, TokenService tokenService)
+    private readonly DataContext _context;
+    public AccountService(UserManager<AppUser> userManager, IMapper mapper, TokenService tokenService, DataContext context)
     {
+        _context = context;
         _mapper = mapper;
         _userManager = userManager;
         _tokenService = tokenService;
@@ -43,26 +46,37 @@ public class AccountService : IAccountService
 
         return Result<UserDto>.Failure(ResultErrorType.Unauthorized, $"Wrong credentials, try again!");
     }
-
+    private bool IsValidRole(string roleName)
+    {
+        // Add additional roles as needed
+        return roleName == "JobSeeker" || roleName == "Entrepreneur" || roleName == "Admin";
+    }
     public async Task<Result<UserDto>> Register(RegisterDto registerDto, string roleName)
     {
+        if (!IsValidRole(roleName))
+        {
+            return Result<UserDto>.Failure(ResultErrorType.BadRequest, "Invalid role name. Allowed values are JobSeeker, Entrepreneur, and Admin.");
+        }
+        
         if (await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email || x.UserName == registerDto.UserName))
         {
-            return Result<UserDto>.Failure(ResultErrorType.BadRequest,"Email/username is taken try another one!");
+            return Result<UserDto>.Failure(ResultErrorType.BadRequest, "Email/username is taken try another one!");
         }
 
         AppUser newUser = roleName switch
         {
             "JobSeeker" => _mapper.Map<JobSeeker>(registerDto),
             "Entrepreneur" => _mapper.Map<Entrepreneur>(registerDto),
-            "Recruiter" => _mapper.Map<Recruiter>(registerDto),
             "Admin" => _mapper.Map<AppUser>(registerDto),
             _ => _mapper.Map<AppUser>(registerDto)
         };
+
         if (newUser == null)
         {
             return Result<UserDto>.Failure(ResultErrorType.BadRequest, "Problem while mapping from/to entity!");
         }
+
+
         var result = await _userManager.CreateAsync(newUser, registerDto.Password);
 
         if (result.Succeeded)
@@ -88,6 +102,32 @@ public class AccountService : IAccountService
 
         return Result<UserDto>.Failure(ResultErrorType.BadRequest, "Something went wrong! Try again!");
     }
+    public async Task<Result<UserDto>> Register(RegisterRecruiterDto recruiterDto)
+    {
+        if (await _userManager.Users.AnyAsync(x => x.Email == recruiterDto.Email || x.UserName == recruiterDto.UserName))
+        {
+            return Result<UserDto>.Failure(ResultErrorType.BadRequest, "Email/username is taken, try another one!");
+        }
+
+        var newUser = _mapper.Map<Recruiter>(recruiterDto);
+        newUser.CompanyId = recruiterDto.CompanyId;
+
+        var result = await _userManager.CreateAsync(newUser, recruiterDto.Password);
+
+        if (result.Succeeded)
+        {
+            await _userManager.AddToRoleAsync(newUser, "Recruiter");
+
+            var userDto = _mapper.Map<RecruiterDto>(newUser);
+            userDto.Token = await _tokenService.CreateToken(newUser);
+
+            return Result<UserDto>.Success(userDto);
+        }
+
+        return Result<UserDto>.Failure(ResultErrorType.BadRequest, "Failed to register the recruiter. Please try again.");
+    }
+
+
 
     public async Task<Result<UserDto>> GetCurrentUser(ClaimsPrincipal userPrincipal)
     {

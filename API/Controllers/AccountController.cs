@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Application.Services.AccountServices;
+using Domain.DTOs;
 using Domain.DTOs.AccountDTOs;
 using DTOs;
 using Microsoft.AspNetCore.Authorization;
@@ -29,8 +30,15 @@ public class AccountController : BaseApiController
         {
                 return HandleResult(await _service.Register(registerDto, roleName));
         }
-        // [Authorize(Roles = "Admin")]
+       
         [AllowAnonymous]
+        [HttpPost("register-recruiter")]
+        public async Task<IActionResult> RegisterRecruiter(RegisterRecruiterDto registerDto)
+        {
+                return HandleResult(await _service.Register(registerDto));
+        }
+       
+        [Authorize(Roles = "Admin")]
         [HttpGet("current-user")]
         public async Task<ActionResult<UserDto>> GetCurrentUser()
         {
