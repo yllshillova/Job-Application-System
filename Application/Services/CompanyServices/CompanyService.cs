@@ -39,6 +39,7 @@ namespace Application.Services.CompanyServices
                 .ThenInclude(r => r.Experiences)
             .Include(c => c.Recruiters)
                 .ThenInclude(r => r.JobPosts)
+                .ThenInclude(j => j.Applications)
             .ToListAsync();
 
             if (companies == null || companies.Count == 0) return Result<List<CompanyDto>>.Failure(ResultErrorType.NotFound, "No companies could be found!");
