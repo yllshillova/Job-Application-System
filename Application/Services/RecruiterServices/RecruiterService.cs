@@ -21,7 +21,7 @@ namespace Application.Services.RecruiterServices
         private readonly IMapper _mapper;
         private readonly UserManager<AppUser> _userManager;
         private readonly TokenService _tokenService;
-        public RecruiterService(DataContext context, IMapper mapper, UserManager<AppUser> userManager,TokenService tokenService) : base(context, mapper)
+        public RecruiterService(DataContext context, IMapper mapper, UserManager<AppUser> userManager, TokenService tokenService) : base(context, mapper)
         {
             _tokenService = tokenService;
             _userManager = userManager;
@@ -48,7 +48,25 @@ namespace Application.Services.RecruiterServices
 
             return Result<RecruiterDto>.Success(recruiterDto);
         }
+        public async Task<Result<RecruiterDto>> GetRecruiterByIdTest(Guid id)
+        {
+            var recruiter = await _context.Users.OfType<Recruiter>()
+            .Include(r => r.Educations)
+            .Include(r => r.Experiences)
+            .Include(r => r.Skills)
+            .Include(r => r.JobPosts)
+            .FirstOrDefaultAsync(r => r.Id == id);
 
+            if (recruiter == null) return Result<RecruiterDto>.Failure(ResultErrorType.NotFound, $"No recruiter with id {id} could be found!");
+
+            var recruiterDto = _mapper.Map<RecruiterDto>(recruiter);
+            if (recruiterDto == null)
+            {
+                return Result<RecruiterDto>.Failure(ResultErrorType.BadRequest, "Problem while mapping from/to entity");
+            }
+
+            return Result<RecruiterDto>.Success(recruiterDto);
+        }
         public async Task<Result<Unit>> AddRecruiter(RecruiterDto recruiterDto)
         {
             var recruiter = _mapper.Map<Recruiter>(recruiterDto);
